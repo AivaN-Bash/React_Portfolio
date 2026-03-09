@@ -1,0 +1,37 @@
+/* ── EXPERIENCE ────────────────────────────────────────────── */
+.exp-list { display: flex; flex-direction: column; gap: 0; max-width: 880px; }
+.exp-conn { width: 1px; height: 18px; background: linear-gradient(var(--blue),transparent); margin-left: 32px; }
+
+.exp-card {
+  position: relative; background: rgba(5,13,31,.85);
+  border: 1px solid rgba(0,200,255,.1);
+  padding: 26px 28px 26px 72px;
+  clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  transition: var(--tr); animation: slideR .5s both;
+}
+.exp-card:hover { border-color: rgba(0,200,255,.34); transform: translateX(7px); }
+
+/* Special card — Work & Travel */
+.exp-card.special { border-color: rgba(255,215,0,.25); background: linear-gradient(135deg,rgba(255,215,0,.04),rgba(5,13,31,.9)); }
+.exp-card.special:hover { border-color: rgba(255,215,0,.5); box-shadow: 0 0 30px rgba(255,215,0,.08); }
+
+.exp-roman { position: absolute; left: 20px; top: 26px; font-family: var(--hd); font-size: 24px; font-weight: 700; opacity: .18; line-height: 1; }
+.exp-pb    { font-family: var(--mono); font-size: 8px; letter-spacing: 2px; color: var(--gold); background: rgba(255,215,0,.07); border: 1px solid rgba(255,215,0,.18); padding: 2px 10px; display: inline-block; margin-bottom: 8px; }
+.exp-role  { font-family: var(--hd); font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 3px; letter-spacing: .5px; }
+.exp-co    { font-family: var(--body); font-size: 12px; font-weight: 500; letter-spacing: 1px; margin-bottom: 3px; }
+.exp-type  { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; display: inline-block; margin-bottom: 12px; background: rgba(0,200,255,.09); color: var(--blue); clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px)); }
+.exp-type.special-type { background: rgba(255,215,0,.12); color: var(--gold); }
+.exp-desc  { font-family: var(--body); font-size: 13px; line-height: 1.75; color: rgba(232,244,255,.5); margin-bottom: 14px; }
+.exp-tags  { display: flex; flex-wrap: wrap; gap: 6px; }
+.exp-tag   { font-family: var(--mono); font-size: 9px; padding: 3px 9px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); color: var(--muted); clip-path: polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,4px 100%,0 calc(100% - 4px)); transition: var(--tr); }
+.exp-card:hover .exp-tag         { border-color: rgba(0,200,255,.28); color: var(--blue); background: rgba(0,200,255,.06); }
+.exp-card.special:hover .exp-tag { border-color: rgba(255,215,0,.3); color: var(--gold); background: rgba(255,215,0,.06); }
+
+.exp-story-btn {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 14px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--gold);
+  background: rgba(255,215,0,.08); border: 1px solid rgba(255,215,0,.25); padding: 6px 14px;
+  cursor: pointer; clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  transition: var(--tr);
+}
+.exp-story-btn:hover { background: rgba(255,215,0,.18); border-color: var(--gold); }

@@ -1,0 +1,65 @@
+/* ── TRAVEL STORY PAGE ─────────────────────────────────────── */
+.travel-page { padding: 80px 80px; position: relative; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--muted); background: none; border: none; cursor: pointer;
+  text-transform: uppercase; transition: var(--tr); margin-bottom: 48px; padding: 0;
+}
+.back-btn:hover { color: var(--blue); }
+
+/* Hero section */
+.travel-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 72px; }
+
+.travel-arcana-badge {
+  font-family: var(--hd); font-size: 9px; color: var(--gold); letter-spacing: 4px;
+  border: 1px solid rgba(255,215,0,.25); padding: 4px 14px; display: inline-block; margin-bottom: 16px;
+  clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+}
+.travel-main-title { font-family: var(--hd); font-size: clamp(28px,4vw,50px); font-weight: 900; color: var(--white); margin-bottom: 8px; line-height: 1.1; }
+.travel-main-title .gold { color: var(--gold); text-shadow: var(--glow-gold); }
+.travel-year  { font-family: var(--mono); font-size: 12px; color: var(--blue); letter-spacing: 4px; margin-bottom: 20px; }
+.travel-intro { font-family: var(--body); font-size: 14px; line-height: 1.85; color: rgba(232,244,255,.6); margin-bottom: 28px; }
+.travel-locations { display: flex; flex-wrap: wrap; gap: 8px; }
+.travel-loc-tag   { font-family: var(--mono); font-size: 9px; padding: 4px 12px; background: rgba(255,215,0,.08); border: 1px solid rgba(255,215,0,.2); color: var(--gold); clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px)); }
+
+/* ── SLIDESHOW ─────────────────────────── */
+.slideshow { position: relative; border: 1px solid rgba(0,200,255,.2); clip-path: polygon(0 0,calc(100% - 20px) 0,100% 20px,100% 100%,20px 100%,0 calc(100% - 20px)); overflow: hidden; background: var(--navy); }
+.ss-img     { width: 100%; height: 320px; object-fit: cover; display: block; animation: slideshow .6s ease; }
+.ss-overlay { position: absolute; inset: 0; background: linear-gradient(to top,rgba(1,6,15,.85) 0%,transparent 50%); pointer-events: none; }
+.ss-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 20px; }
+.ss-cap-num  { font-family: var(--mono); font-size: 9px; color: var(--blue); letter-spacing: 2px; margin-bottom: 4px; }
+.ss-cap-text { font-family: var(--body); font-size: 13px; color: var(--white); line-height: 1.4; }
+
+.ss-progress      { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(255,255,255,.08); }
+.ss-progress-fill { height: 100%; background: linear-gradient(90deg,var(--blue),var(--gold)); animation: progressBar 4s linear; }
+
+.ss-controls { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: rgba(5,13,31,.9); border-top: 1px solid rgba(0,200,255,.1); }
+.ss-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: rgba(0,200,255,.08); border: 1px solid rgba(0,200,255,.2); color: var(--blue); cursor: pointer; font-size: 14px; clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px)); transition: var(--tr); }
+.ss-btn:hover { background: rgba(0,200,255,.2); border-color: var(--blue); }
+.ss-dots { display: flex; gap: 5px; align-items: center; }
+.ss-dot  { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.2); cursor: pointer; transition: var(--tr); }
+.ss-dot.on { background: var(--blue); box-shadow: var(--glow); }
+.ss-auto-btn { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; color: var(--muted); background: none; border: none; cursor: pointer; transition: var(--tr); display: flex; align-items: center; gap: 4px; }
+.ss-auto-btn:hover, .ss-auto-btn.playing { color: var(--blue); }
+
+/* Chapters */
+.travel-chapters   { margin-top: 64px; }
+.chapters-title    { font-family: var(--hd); font-size: 20px; font-weight: 600; color: var(--white); letter-spacing: 2px; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+.chapters-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg,rgba(0,200,255,.3),transparent); }
+.chapters-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.chapter-card  { background: rgba(5,13,31,.85); border: 1px solid rgba(0,200,255,.1); padding: 24px; clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px)); transition: var(--tr); animation: fadeUp .5s both; }
+.chapter-card:hover { transform: translateY(-4px); border-color: rgba(0,200,255,.3); }
+.chapter-icon  { font-size: 32px; margin-bottom: 12px; display: block; }
+.chapter-title { font-family: var(--hd); font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.chapter-loc   { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; margin-bottom: 14px; }
+.chapter-story { font-family: var(--body); font-size: 13px; line-height: 1.75; color: rgba(232,244,255,.55); }
+.chapter-line  { height: 2px; margin-top: 16px; border-radius: 1px; opacity: .5; }
+
+@media (max-width: 860px) {
+  .travel-page    { padding: 55px 22px; }
+  .travel-hero    { grid-template-columns: 1fr; }
+  .ss-img         { height: 220px; }
+  .chapters-grid  { grid-template-columns: 1fr; }
+}

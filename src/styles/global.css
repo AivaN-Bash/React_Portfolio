@@ -1,0 +1,126 @@
+/* ============================================================
+   GLOBAL STYLES — Variables, reset, background, shared
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:    #01060f;
+  --navy:   #050d1f;
+  --panel:  rgba(5, 13, 31, 0.92);
+  --blue:   #00c8ff;
+  --gold:   #ffd700;
+  --purple: #7b61ff;
+  --pink:   #ff6b9d;
+  --white:  #e8f4ff;
+  --muted:  #5a7a9a;
+  --dim:    #2a4a6a;
+  --border: rgba(0, 200, 255, 0.18);
+  --glow:      0 0 24px rgba(0,200,255,0.5), 0 0 80px rgba(0,200,255,0.15);
+  --glow-gold: 0 0 20px rgba(255,215,0,0.5), 0 0 60px rgba(255,215,0,0.1);
+  --hd:   'Cinzel', serif;
+  --body: 'Rajdhani', sans-serif;
+  --mono: 'Share Tech Mono', monospace;
+  --tr:   all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--body);
+  overflow-x: hidden;
+  min-height: 100vh;
+  cursor: none;
+}
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+/* ── ANIMATIONS ─────────────────────────── */
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideR   { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes spin     { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+@keyframes spinR    { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
+@keyframes float    { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-13px); } }
+@keyframes scanH    { 0% { transform: translateY(-200px); } 100% { transform: translateY(120vh); } }
+@keyframes moonGlow { 0%,100% { filter: drop-shadow(0 0 8px rgba(0,200,255,.5)); } 50% { filter: drop-shadow(0 0 28px rgba(0,200,255,1)); } }
+@keyframes pulse    { 0%,100% { opacity: .5; } 50% { opacity: 1; } }
+@keyframes barFill  { from { width: 0; } to { width: var(--w); } }
+@keyframes progressBar { from { width: 0%; } to { width: 100%; } }
+@keyframes slideshow   { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: scale(1); } }
+
+/* ── BACKGROUND ─────────────────────────── */
+.bg-l { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-g {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 0%, rgba(0,100,200,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 100%, rgba(123,97,255,.1) 0%, transparent 60%),
+    linear-gradient(180deg, var(--ink) 0%, #020a18 50%, var(--ink) 100%);
+}
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,200,255,.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,200,255,.038) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+.bg-dots {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(0,200,255,.1) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: .25;
+}
+.scan {
+  position: absolute; left: 0; right: 0; height: 180px;
+  background: linear-gradient(transparent, rgba(0,200,255,.025), transparent);
+  animation: scanH 14s linear infinite;
+}
+.clock-ring  { position: absolute; width: 760px; height: 760px; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); border: 1px solid rgba(0,200,255,.06); }
+.clock-ring2 { position: absolute; width: 560px; height: 560px; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%,-50%); border: 1px solid rgba(0,200,255,.04); }
+
+/* ── SHARED PAGE ────────────────────────── */
+.page { position: relative; z-index: 1; padding-top: 62px; min-height: 100vh; }
+
+/* ── SECTION HEADER ─────────────────────── */
+.sec           { padding: 80px 80px; position: relative; }
+.sec-tag       { position: absolute; top: 28px; left: 48px; font-family: var(--mono); font-size: 8px; color: rgba(0,200,255,.28); letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.sec-tag::before { content: ''; width: 16px; height: 1px; background: rgba(0,200,255,.28); }
+.sec-hd        { margin-bottom: 52px; display: flex; align-items: flex-end; gap: 20px; }
+.sec-n         { font-family: var(--hd); font-size: 72px; font-weight: 900; line-height: .85; color: rgba(0,200,255,.055); letter-spacing: -4px; user-select: none; }
+.sec-ey        { font-family: var(--mono); font-size: 9px; color: var(--blue); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 7px; display: block; }
+.sec-title     { font-family: var(--hd); font-size: clamp(26px,3.2vw,42px); font-weight: 700; color: var(--white); line-height: 1.1; }
+.sec-title .dim { color: rgba(232,244,255,.2); }
+.sec-rule      { height: 1px; margin-top: 12px; background: linear-gradient(90deg, var(--blue), var(--purple), var(--gold), transparent); animation: barFill 1.2s .4s forwards; --w: 200px; width: 0; }
+
+/* ── SHARED BUTTONS ─────────────────────── */
+.btn-p { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border: none; background: transparent; color: var(--blue); position: relative; overflow: hidden; clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); transition: var(--tr); }
+.btn-p::before { content: ''; position: absolute; inset: 1px; background: linear-gradient(135deg,rgba(0,200,255,.1),rgba(123,97,255,.07)); clip-path: polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px)); }
+.btn-p::after  { content: ''; position: absolute; inset: 0; border: 1px solid rgba(0,200,255,.4); clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); }
+.btn-p span    { position: relative; z-index: 1; }
+.btn-p:hover   { color: var(--white); }
+.btn-p:hover::before { background: linear-gradient(135deg,rgba(0,200,255,.22),rgba(123,97,255,.18)); }
+
+.btn-s { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; background: transparent; color: var(--gold); border: 1px solid rgba(255,215,0,.28); clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); transition: var(--tr); }
+.btn-s:hover { background: rgba(255,215,0,.08); border-color: var(--gold); }
+
+/* ── FOOTER ─────────────────────────────── */
+.footer { position: relative; z-index: 1; padding: 22px 80px; border-top: 1px solid rgba(0,200,255,.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg,transparent,var(--blue),var(--purple),var(--gold),transparent); opacity: .3; }
+.ft       { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 2px; }
+.ft span  { color: var(--blue); }
+
+/* ── CURSOR ─────────────────────────────── */
+#p3c { position: fixed; width: 14px; height: 14px; border: 2px solid var(--blue); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: screen; transition: width .12s; }
+#p3d { position: fixed; width: 4px;  height: 4px;  background: var(--blue); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); mix-blend-mode: screen; }
+
+/* ── MOBILE ─────────────────────────────── */
+@media (max-width: 860px) {
+  .sec       { padding: 55px 22px; }
+  .sec-n     { font-size: 48px; }
+  .footer    { padding: 18px 22px; }
+}

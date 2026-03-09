@@ -1,0 +1,36 @@
+/* ── SKILLS ────────────────────────────────────────────────── */
+.sk-tabs { display: flex; gap: 0; margin-bottom: 40px; border-bottom: 1px solid rgba(0,200,255,.12); }
+.sk-tab  {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); padding: 11px 22px; cursor: pointer; border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: var(--tr); position: relative;
+}
+.sk-tab:hover { color: var(--blue); }
+.sk-tab.on    { color: var(--blue); border-bottom-color: var(--blue); }
+.sk-tab.on::after {
+  content: attr(data-arcana); position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+  font-family: var(--hd); font-size: 7px; color: var(--gold); letter-spacing: 2px; white-space: nowrap; opacity: .6;
+}
+
+.sk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 11px; }
+.sk-card {
+  background: rgba(5,13,31,.85); border: 1px solid rgba(0,200,255,.1);
+  padding: 18px 20px; position: relative; overflow: hidden;
+  clip-path: polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px));
+  transition: var(--tr); animation: fadeUp .5s both;
+}
+.sk-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,rgba(0,200,255,.04),transparent); opacity: 0; transition: opacity .3s; }
+.sk-card:hover   { border-color: rgba(0,200,255,.38); transform: translateY(-3px); }
+.sk-card:hover::before { opacity: 1; }
+
+.sk-tr  { position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-right: 1px solid rgba(0,200,255,.28); border-top: 1px solid rgba(0,200,255,.28); }
+.sk-bl  { position: absolute; bottom: 5px; left: 5px; width: 6px; height: 6px; border-left: 1px solid rgba(0,200,255,.28); border-bottom: 1px solid rgba(0,200,255,.28); }
+.sk-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
+.sk-name  { font-family: var(--body); font-size: 14px; font-weight: 600; color: var(--white); }
+.sk-badge { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 8px; clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px)); }
+.b-ex     { background: rgba(0,200,255,.14); color: var(--blue); }
+.b-ad     { background: rgba(123,97,255,.14); color: var(--purple); }
+.b-in     { background: rgba(255,215,0,.1);   color: var(--gold); }
+.sk-track { height: 3px; background: rgba(255,255,255,.05); overflow: hidden; }
+.sk-fill  { height: 100%; background: linear-gradient(90deg,var(--blue),var(--purple)); box-shadow: 0 0 5px rgba(0,200,255,.55); transition: width 1.3s cubic-bezier(.4,0,.2,1); }
+.sk-pct   { font-family: var(--mono); font-size: 9px; color: rgba(0,200,255,.55); margin-top: 5px; text-align: right; }
