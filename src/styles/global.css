@@ -134,3 +134,58 @@ body {
 .reveal {
   will-change: opacity, transform;
 }
+
+/* ── TOUCH TAP FEEDBACK (#4) ───────────────────────────────── */
+/*
+  On mobile/touch, cards and buttons get a quick scale-down
+  when tapped — same satisfying feel as a native app.
+  The :active state fires on touch too, not just mouse click.
+*/
+.sk-card:active,
+.exp-card:active,
+.proj-card:active,
+.chapter-card:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+.exp-card.special:active { transform: scale(0.97) !important; }
+
+/* ── MINIMUM TAP SIZES (#5) ────────────────────────────────── */
+/*
+  Apple & Google both recommend 44×44px minimum touch targets.
+  We enforce this on all interactive elements.
+*/
+.btn-p,
+.btn-s,
+.btn-cv,
+.f-btn,
+.exp-story-btn,
+.proj-link,
+.ss-btn,
+.back-btn {
+  min-height: 44px;
+}
+/* Back btn is inline text so we just add vertical padding */
+.back-btn { padding: 10px 0; }
+
+/* Stack pills and exp-tags slightly bigger touch area on mobile */
+@media (hover: none) {
+  .stack-pill  { padding: 7px 13px; }
+  .exp-tag     { padding: 6px 11px; }
+  .proj-tag    { padding: 6px 11px; }
+  .ss-dot      { width: 10px; height: 10px; } /* bigger dot tap area */
+}
+
+/* ── REMOVE CURSOR ON TOUCH DEVICES ────────────────────────── */
+/* The custom cyan cursor looks weird on mobile, hide it */
+@media (hover: none) {
+  #p3c, #p3d { display: none; }
+  body        { cursor: auto; }
+}
+
+/* ── SAFE AREA (iPhone notch/home bar) ─────────────────────── */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .footer {
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+}

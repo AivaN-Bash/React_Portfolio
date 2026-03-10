@@ -12,12 +12,12 @@ const TRAVEL = {
 
   // 🔧 YOUR PHOTOS — add/remove as many as you want!
   photos: [
-    { src: "./photos/dollywood-work.jpg",  caption: "Working at Dollywood Theme Park, Tennessee 🎡" },
-    { src: "./photos/gallery1.jpg",         caption: "Part-time at the Thai Restaurant 🍜" },
-    { src: "./photos/gallery2.jpg",         caption: "Exploring the beautiful Tennessee mountains 🏔️" },
-    { src: "./photos/gallery3.jpg",         caption: "Lights of Las Vegas, Nevada 🎰" },
-    { src: "./photos/restaurant-work.jpg",  caption: "Sunny Los Angeles, California ☀️" },
-    { src: "./photos/WAT.jpg",              caption: "Golden Gate Bridge, San Francisco 🌉" },
+    { src: "/photos/dollywood-work.jpg",  caption: "Working at Dollywood Theme Park, Tennessee 🎡" },
+    { src: "/photos/gallery1.jpg",         caption: "Part-time at the Thai Restaurant 🍜" },
+    { src: "/photos/gallery2.jpg",         caption: "Exploring the beautiful Tennessee mountains 🏔️" },
+    { src: "/photos/gallery3.jpg",         caption: "Lights of Las Vegas, Nevada 🎰" },
+    { src: "/photos/restaurant-work.jpg",  caption: "Sunny Los Angeles, California ☀️" },
+    { src: "/photos/WAT.jpg",              caption: "Golden Gate Bridge, San Francisco 🌉" },
   ],
 
   // 🔧 YOUR CHAPTER STORIES — edit the story text for each one

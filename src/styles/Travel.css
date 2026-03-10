@@ -63,3 +63,18 @@
   .ss-img         { height: 220px; }
   .chapters-grid  { grid-template-columns: 1fr; }
 }
+
+/* ── SWIPE HINT (mobile only) ──────────────────────────────── */
+.ss-swipe-hint {
+  display: none;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--mono); font-size: 10px;
+  color: rgba(255,255,255,.3); letter-spacing: 3px;
+  pointer-events: none; user-select: none;
+  animation: pulse 2s ease-in-out 3; /* shows 3 times then gone */
+}
+@media (hover: none) {
+  .ss-swipe-hint { display: block; }
+}

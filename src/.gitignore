@@ -1,0 +1,14 @@
+# ของหนัก ห้ามเอาขึ้น!
+node_modules/
+
+# ไฟล์ที่ได้จากการแปลงร่าง (Build)
+build/
+dist/
+
+# ไฟล์เก็บความลับ (ถ้ามี)
+.env
+.env.local
+
+# ไฟล์ขยะของระบบ Windows/Mac
+.DS_Store
+Thumbs.db
