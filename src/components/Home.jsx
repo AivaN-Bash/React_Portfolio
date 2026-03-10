@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/Home.css";
 import ME from "../data/me";
+import useTilt from "../hooks/useTilt";
 
 // ── SVG helpers ───────────────────────────────────────────────
 const MoonSVG = () => (
@@ -18,7 +19,7 @@ const Tri = ({ size=40, color="#00c8ff", op=0.3, style={} }) => (
   </svg>
 );
 
-// ── Typing animation hook ─────────────────────────────────────
+// ── Typing animation ──────────────────────────────────────────
 const ROLES = [
   "Backend Developer",
   "API Engineer",
@@ -26,41 +27,32 @@ const ROLES = [
   "Python Developer",
   "Database Designer",
 ];
-
 function useTyping(words, speed=80, pause=1800) {
   const [display,  setDisplay]  = useState("");
   const [wordIdx,  setWordIdx]  = useState(0);
   const [charIdx,  setCharIdx]  = useState(0);
   const [deleting, setDeleting] = useState(false);
-
   useEffect(() => {
     const current = words[wordIdx];
     let delay = deleting ? speed / 2 : speed;
     if (!deleting && charIdx === current.length) delay = pause;
-
     const t = setTimeout(() => {
       if (!deleting && charIdx < current.length) {
-        setDisplay(current.slice(0, charIdx + 1));
-        setCharIdx(i => i + 1);
+        setDisplay(current.slice(0, charIdx + 1)); setCharIdx(i => i + 1);
       } else if (!deleting && charIdx === current.length) {
         setDeleting(true);
       } else if (deleting && charIdx > 0) {
-        setDisplay(current.slice(0, charIdx - 1));
-        setCharIdx(i => i - 1);
-      } else if (deleting && charIdx === 0) {
-        setDeleting(false);
-        setWordIdx(i => (i + 1) % words.length);
+        setDisplay(current.slice(0, charIdx - 1)); setCharIdx(i => i - 1);
+      } else {
+        setDeleting(false); setWordIdx(i => (i + 1) % words.length);
       }
     }, delay);
-
     return () => clearTimeout(t);
   }, [charIdx, deleting, wordIdx, words, speed, pause]);
-
   return display;
 }
 
 // ── Tech stack ────────────────────────────────────────────────
-// 🔧 Edit these to match your real stack
 const STACK = [
   { name:"Node.js",    color:"#68a063" },
   { name:"Python",     color:"#3b8ede" },
@@ -72,8 +64,18 @@ const STACK = [
   { name:"AWS",        color:"#ff9900" },
 ];
 
+// ── Glitch name component ─────────────────────────────────────
+function GlitchName({ text }) {
+  return (
+    <span className="glitch" data-text={text}>
+      {text}
+    </span>
+  );
+}
+
 export default function Home({ setPage }) {
   const typedRole = useTyping(ROLES);
+  const { cardRef, glowRef } = useTilt(11);
   const parts  = ME.name.split(" ");
   const middle = parts.slice(0, -1).join(" ");
   const last   = parts.slice(-1)[0];
@@ -86,7 +88,8 @@ export default function Home({ setPage }) {
 
         <h1 className="hero-name">
           {middle}<br/>
-          <span className="gold">{last}</span>
+          {/* Glitch effect on last name */}
+          <span className="gold"><GlitchName text={last}/></span>
         </h1>
 
         <div className="hero-nick">「 {ME.nickname.toUpperCase()} 」</div>
@@ -114,7 +117,7 @@ export default function Home({ setPage }) {
           </div>
         </div>
 
-        {/* CTA buttons */}
+        {/* Buttons */}
         <div className="hero-btns">
           <button className="btn-p" onClick={() => setPage("contact")}>
             <span>✉ Contact Me</span>
@@ -122,7 +125,6 @@ export default function Home({ setPage }) {
           <button className="btn-s" onClick={() => setPage("projects")}>
             ▶ View Projects
           </button>
-          {/* 🔧 Put your CV PDF in public/cv/Beam-CV.pdf */}
           <a className="btn-cv" href="./cv/Beam-CV.pdf" download>
             ↓ Download CV
           </a>
@@ -141,13 +143,17 @@ export default function Home({ setPage }) {
         </div>
       </div>
 
-      {/* ── Right: Persona card ── */}
+      {/* ── Right: Persona card with 3D tilt ── */}
       <div className="p-frame">
         <div className="p-ring1"/><div className="p-ring2"/>
         <div className="p-tr1"><Tri size={28} color="#00c8ff" op={0.55}/></div>
         <div className="p-tr2"><Tri size={20} color="#ffd700" op={0.45}/></div>
-        <div className="p-card">
+
+        {/* cardRef = tilt target */}
+        <div className="p-card" ref={cardRef}>
           <MoonSVG/>
+          {/* glowRef = cursor glow highlight layer */}
+          <div ref={glowRef} className="p-card-glow"/>
           <div className="p-card-in">
             <div className="p-arcana">{ME.arcana}</div>
             <div className="p-symbol">🌙</div>

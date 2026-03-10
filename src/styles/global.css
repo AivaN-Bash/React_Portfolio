@@ -124,3 +124,13 @@ body {
   .sec-n     { font-size: 48px; }
   .footer    { padding: 18px 22px; }
 }
+
+/* ── SCROLL REVEAL BASE ────────────────────────────────────── */
+/*
+  useScrollReveal hook sets opacity/transform via inline styles.
+  This class just marks elements as "reveal-able" for clarity.
+  The actual animation is driven by the hook + IntersectionObserver.
+*/
+.reveal {
+  will-change: opacity, transform;
+}
