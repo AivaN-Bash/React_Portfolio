@@ -1,26 +1,24 @@
 // ============================================================
 // ✏️  WORK & TRAVEL STORY — Edit your story and photos here
 // ============================================================
-// 📸 PHOTOS: Put your images inside the public/photos/ folder
-//    Then reference them as "./photos/yourfile.jpg"
-// ============================================================
+
+const BASE = process.env.PUBLIC_URL || "";
+
 const TRAVEL = {
   title:  "Work & Travel USA 🇺🇸",
   year:   "2022",
   arcana: "THE WORLD",
   intro:  "One of the most memorable chapters of my life — working, exploring, and growing across the United States. From the mountains of Tennessee to the neon lights of Las Vegas, every moment shaped who I am today.",
 
-  // 🔧 YOUR PHOTOS — add/remove as many as you want!
   photos: [
-    { src: "/photos/dollywood-work.jpg",  caption: "Working at Dollywood Theme Park, Tennessee 🎡" },
-    { src: "/photos/gallery1.jpg",         caption: "Part-time at the Thai Restaurant 🍜" },
-    { src: "/photos/gallery2.jpg",         caption: "Exploring the beautiful Tennessee mountains 🏔️" },
-    { src: "/photos/gallery3.jpg",         caption: "Lights of Las Vegas, Nevada 🎰" },
-    { src: "/photos/restaurant-work.jpg",  caption: "Sunny Los Angeles, California ☀️" },
-    { src: "/photos/WAT.jpg",              caption: "Golden Gate Bridge, San Francisco 🌉" },
+    { src: `${BASE}/photos/dollywood-work.jpg`,  caption: "Working at Dollywood Theme Park, Tennessee 🎡" },
+    { src: `${BASE}/photos/gallery1.jpg`,         caption: "Part-time at the Thai Restaurant 🍜" },
+    { src: `${BASE}/photos/gallery2.jpg`,         caption: "Exploring the beautiful Tennessee mountains 🏔️" },
+    { src: `${BASE}/photos/gallery3.jpg`,         caption: "Lights of Las Vegas, Nevada 🎰" },
+    { src: `${BASE}/photos/restaurant-work.jpg`,  caption: "Sunny Los Angeles, California ☀️" },
+    { src: `${BASE}/photos/WAT.jpg`,              caption: "Golden Gate Bridge, San Francisco 🌉" },
   ],
 
-  // 🔧 YOUR CHAPTER STORIES — edit the story text for each one
   chapters: [
     {
       icon:     "🎡",
