@@ -84,7 +84,7 @@ export default function Home({ setPage }) {
     <section className="hero">
       {/* ── Left: text ── */}
       <div>
-        <div className="h-over">PERSONA ACTIVATED — AWAITING COMMAND</div>
+        <div className="h-over">ACTIVATED — AWAITING </div>
 
         <h1 className="hero-name">
           {middle}<br/>
