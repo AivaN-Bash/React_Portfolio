@@ -2,13 +2,17 @@ import "../styles/Nav.css";
 import ME from "../data/me";
 
 const LINKS = [
-  { id: "home",    label: "Home"       },
-  { id: "skills",  label: "Skills"     },
-  { id: "exp",     label: "Experience" },
-  { id: "contact", label: "Contact"    },
+  { id:"home",     label:"Home"       },
+  { id:"skills",   label:"Skills"     },
+  { id:"projects", label:"Projects"   },
+  { id:"exp",      label:"Experience" },
+  { id:"contact",  label:"Contact"    },
 ];
 
 export default function Nav({ page, setPage }) {
+  const isActive = (id) =>
+    page === id || (page === "travel" && id === "exp");
+
   return (
     <nav className="nav">
       <div className="nav-logo" onClick={() => setPage("home")}>
@@ -20,7 +24,7 @@ export default function Nav({ page, setPage }) {
         {LINKS.map(l => (
           <button
             key={l.id}
-            className={`nl ${(page === l.id || (page === "travel" && l.id === "exp")) ? "on" : ""}`}
+            className={`nl${isActive(l.id) ? " on" : ""}`}
             onClick={() => setPage(l.id)}
           >
             {l.label}

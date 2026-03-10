@@ -1,0 +1,111 @@
+/* ── PROJECTS PAGE ─────────────────────────────────────────── */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.proj-card {
+  position: relative;
+  background: rgba(5, 13, 31, 0.88);
+  border: 1px solid rgba(0, 200, 255, 0.1);
+  padding: 28px 26px;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+  transition: var(--tr);
+  animation: fadeUp 0.5s both;
+  overflow: hidden;
+}
+.proj-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,200,255,.04), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.proj-card:hover { transform: translateY(-5px); }
+.proj-card:hover::before { opacity: 1; }
+
+/* Corner accents */
+.proj-corner-tr { position: absolute; top: 6px; right: 6px; width: 10px; height: 10px; border-right: 1px solid rgba(0,200,255,.3); border-top: 1px solid rgba(0,200,255,.3); }
+.proj-corner-bl { position: absolute; bottom: 6px; left: 6px; width: 10px; height: 10px; border-left: 1px solid rgba(0,200,255,.3); border-bottom: 1px solid rgba(0,200,255,.3); }
+
+/* Card top row */
+.proj-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 14px;
+}
+.proj-icon {
+  font-size: 28px; line-height: 1;
+  filter: drop-shadow(0 0 8px rgba(0,200,255,.4));
+}
+.proj-status {
+  font-family: var(--mono); font-size: 8px;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 9px;
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+}
+.ps-live     { background: rgba(0, 255, 120, .12); color: #00ff88; border: 1px solid rgba(0,255,120,.25); }
+.ps-progress { background: rgba(255, 215, 0,  .12); color: var(--gold); border: 1px solid rgba(255,215,0,.25); }
+.ps-done     { background: rgba(0, 200, 255, .12); color: var(--blue); border: 1px solid rgba(0,200,255,.25); }
+
+/* Roman numeral watermark */
+.proj-roman {
+  position: absolute; right: 18px; bottom: 14px;
+  font-family: var(--hd); font-size: 52px; font-weight: 900;
+  opacity: 0.05; line-height: 1; user-select: none;
+  pointer-events: none;
+}
+
+.proj-title {
+  font-family: var(--hd); font-size: 16px; font-weight: 600;
+  color: var(--white); letter-spacing: 0.5px; margin-bottom: 10px;
+}
+.proj-desc {
+  font-family: var(--body); font-size: 13px; line-height: 1.75;
+  color: rgba(232,244,255,.5); margin-bottom: 16px;
+}
+
+/* Tags */
+.proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.proj-tag {
+  font-family: var(--mono); font-size: 9px; padding: 3px 9px;
+  background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+  color: var(--muted);
+  clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px));
+  transition: var(--tr);
+}
+.proj-card:hover .proj-tag {
+  border-color: rgba(0,200,255,.25);
+  color: var(--blue);
+  background: rgba(0,200,255,.05);
+}
+
+/* Links */
+.proj-links { display: flex; gap: 10px; }
+.proj-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 1px;
+  text-transform: uppercase; padding: 7px 14px;
+  cursor: pointer; text-decoration: none;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
+  transition: var(--tr);
+}
+.pl-github {
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.03);
+}
+.pl-github:hover { color: var(--white); border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.06); }
+
+.pl-live {
+  color: var(--blue);
+  border: 1px solid rgba(0,200,255,.25);
+  background: rgba(0,200,255,.07);
+}
+.pl-live:hover { color: var(--white); border-color: var(--blue); background: rgba(0,200,255,.15); }
+
+/* Color accent bar at bottom of card */
+.proj-accent-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px; opacity: 0;
+  transition: opacity 0.3s;
+}
+.proj-card:hover .proj-accent-bar { opacity: 0.6; }
