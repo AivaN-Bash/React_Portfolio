@@ -9,7 +9,6 @@ export default function Skills() {
   const [tab,  setTab]  = useState("backend");
   const [anim, setAnim] = useState(false);
 
-  // Scroll reveal refs
   const headerRef = useScrollReveal({ delay: 0 });
   const tabsRef   = useScrollReveal({ delay: 100 });
   const gridRef   = useScrollReveal({ delay: 180 });
@@ -24,13 +23,13 @@ export default function Skills() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// ABILITIES</div>
+      <div className="sec-tag">// SKILLS</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">01</div>
         <div>
-          <span className="sec-ey">capabilities · arcana</span>
-          <h2 className="sec-title">Skills &amp; <span className="dim">Expertise</span></h2>
+          <span className="sec-ey">what I actually know</span>
+          <h2 className="sec-title">Skills &amp; <span className="dim">Tools</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>

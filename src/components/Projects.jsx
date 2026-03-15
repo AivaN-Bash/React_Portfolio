@@ -14,12 +14,12 @@ export default function Projects() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// WORKS</div>
+      <div className="sec-tag">// PROJECTS</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">04</div>
         <div>
-          <span className="sec-ey">portfolio · builds</span>
+          <span className="sec-ey">things I've built</span>
           <h2 className="sec-title">My <span className="dim">Projects</span></h2>
           <div className="sec-rule"/>
         </div>

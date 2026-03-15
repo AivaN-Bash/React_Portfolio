@@ -1,7 +1,7 @@
 /* ============================================================
    GLOBAL STYLES — Variables, reset, background, shared
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -20,7 +20,7 @@
   --glow:      0 0 24px rgba(0,200,255,0.5), 0 0 80px rgba(0,200,255,0.15);
   --glow-gold: 0 0 20px rgba(255,215,0,0.5), 0 0 60px rgba(255,215,0,0.1);
   --hd:   'Cinzel', serif;
-  --body: 'Rajdhani', sans-serif;
+  --body: 'Inter', sans-serif;
   --mono: 'Share Tech Mono', monospace;
   --tr:   all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -188,4 +188,34 @@ body {
   .footer {
     padding-bottom: calc(18px + env(safe-area-inset-bottom));
   }
+}
+
+/* ── INTER FONT TUNING ─────────────────────────────────────── */
+/*
+  Inter reads smaller than Rajdhani at the same size.
+  These overrides make body text feel more comfortable.
+*/
+.hero-about,
+.exp-desc,
+.proj-desc,
+.chapter-story,
+.travel-intro,
+.contact-lore {
+  font-size: 15px !important;
+  line-height: 1.8 !important;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Section eyebrow labels — slightly more breathing room */
+.sec-ey {
+  font-size: 11px !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 500;
+}
+
+/* Paragraph text in general */
+p {
+  font-family: var(--body);
+  font-weight: 400;
 }

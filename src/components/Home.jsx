@@ -84,7 +84,7 @@ export default function Home({ setPage }) {
     <section className="hero">
       {/* ── Left: text ── */}
       <div>
-        <div className="h-over">ACTIVATED — AWAITING </div>
+        <div className="h-over">Bangkok, Thailand · Open to Work</div>
 
         <h1 className="hero-name">
           {middle}<br/>

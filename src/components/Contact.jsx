@@ -29,13 +29,13 @@ export default function Contact() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// CONNECT</div>
+      <div className="sec-tag">// CONTACT</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">03</div>
         <div>
-          <span className="sec-ey">social links · form</span>
-          <h2 className="sec-title">Get In <span className="dim">Touch</span></h2>
+          <span className="sec-ey">let's talk</span>
+          <h2 className="sec-title">Say <span className="dim">Hello</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>
@@ -43,9 +43,8 @@ export default function Contact() {
       <div className="contact-layout">
         <div ref={leftRef}>
           <p className="contact-lore">
-            {ME.about}<br/><br/>
-            Open to full-time roles, freelance projects, and collaborations.
-            Reach out — I respond within 24 hours.
+            I'm currently open to full-time backend roles, freelance work, and interesting side projects.<br/><br/>
+            If you have something in mind — or just want to talk code — feel free to reach out. I check my email regularly and usually reply the same day.
           </p>
           <div className="contact-links">
             {links.map(l => (
@@ -67,12 +66,12 @@ export default function Contact() {
             {status === "sent" ? (
               <div className="f-ok">
                 <span className="f-ok-g">🌙</span>
-                <div className="f-ok-t">Message Received</div>
-                <div className="f-ok-s">Thanks, {form.name}. I'll respond within 24 hours.</div>
+                <div className="f-ok-t">Got it, thanks!</div>
+                <div className="f-ok-s">I'll get back to you soon, {form.name}.</div>
               </div>
             ) : (
               <>
-                <div className="form-hd">「 Send a Message 」</div>
+                <div className="form-hd">Drop me a message</div>
                 <div className="form-2">
                   <div className="fg">
                     <label className="fl">Name</label>
@@ -92,7 +91,7 @@ export default function Contact() {
                   <textarea className="fta" name="message" placeholder="Tell me about your project..." value={form.message} onChange={handleChange}/>
                 </div>
                 <button className="f-btn" onClick={handleSend} disabled={status === "sending"}>
-                  {status === "sending" ? "TRANSMITTING..." : "▶ SEND MESSAGE"}
+                  {status === "sending" ? "Sending..." : "Send Message"}
                 </button>
               </>
             )}

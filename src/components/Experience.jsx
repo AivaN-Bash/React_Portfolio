@@ -30,13 +30,13 @@ export default function Experience({ setPage }) {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// JOURNEY</div>
+      <div className="sec-tag">// EXPERIENCE</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">02</div>
         <div>
-          <span className="sec-ey">work history · timeline</span>
-          <h2 className="sec-title">Work <span className="dim">Experience</span></h2>
+          <span className="sec-ey">where I've been</span>
+          <h2 className="sec-title">Work <span className="dim">History</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>
