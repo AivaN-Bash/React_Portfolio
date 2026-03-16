@@ -71,7 +71,7 @@ export default function Skills() {
           <div
             key={skill.name}
             className="sk-card"
-            style={{ animation: `fadeUp 0.45s ${i * 0.06}s both` }}
+            style={{ animation: `fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.055}s both` }}
           >
             <div className="sk-tr" aria-hidden="true"/>
             <div className="sk-bl" aria-hidden="true"/>

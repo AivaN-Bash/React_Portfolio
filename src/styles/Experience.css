@@ -6,7 +6,7 @@
 .exp-conn {
   width: 1px; height: 16px;
   background: linear-gradient(var(--accent), transparent);
-  margin-left: 30px;
+  margin-left: 32px;
 }
 
 .exp-card {
@@ -15,8 +15,9 @@
   border: 1px solid rgba(var(--accent-rgb),.1);
   padding: 24px 26px 24px 68px;
   clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
-  transition: var(--tr);
-  animation: slideR .5s both;
+  animation: slideR 0.55s cubic-bezier(0.16,1,0.3,1) both;
+  contain: layout;
+  transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), box-shadow 0.28s var(--ease);
 }
 .exp-card:hover {
   border-color: rgba(var(--accent-rgb),.32);
@@ -88,7 +89,7 @@
   border: 1px solid rgba(var(--text-rgb), .06);
   color: var(--text-muted);
   clip-path: polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,4px 100%,0 calc(100% - 4px));
-  transition: var(--tr);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .exp-card:hover .exp-tag         { border-color: rgba(var(--accent-rgb),.26); color: var(--accent); background: rgba(var(--accent-rgb),.05); }
 .exp-card.special:hover .exp-tag { border-color: rgba(var(--accent2-rgb),.28); color: var(--accent2); background: rgba(var(--accent2-rgb),.05); }
@@ -104,7 +105,7 @@
   border: 1px solid rgba(var(--accent2-rgb),.22);
   padding: 8px 16px; cursor: pointer;
   clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
-  transition: var(--tr);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 .exp-story-btn:hover { background: rgba(var(--accent2-rgb),.16); border-color: var(--accent2); }
 

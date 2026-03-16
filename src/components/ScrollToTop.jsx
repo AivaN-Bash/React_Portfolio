@@ -1,17 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /**
  * ScrollToTop
  *
- * Floating button — appears after scrolling 320px.
- * Smooth fade-in/out. Accessible keyboard target.
- * Styles live in global.css under .stt-btn.
+ * Appears after scrolling 320px. Fades in/out smoothly.
+ *
+ * Performance fix: only calls setState when visible actually
+ * changes — avoids a re-render on every single scroll event.
+ * Uses useRef to track the previous value without triggering
+ * extra renders.
  */
 export default function ScrollToTop() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible]   = useState(false);
+  const prevVisible = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 320);
+    const onScroll = () => {
+      const shouldShow = window.scrollY > 320;
+      // Only update state when value actually changes
+      if (shouldShow !== prevVisible.current) {
+        prevVisible.current = shouldShow;
+        setVisible(shouldShow);
+      }
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

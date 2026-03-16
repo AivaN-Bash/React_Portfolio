@@ -85,7 +85,7 @@
 .travel-intro {
   font-family:   var(--body);
   font-size:     1rem;
-  line-height:   1.8;
+  line-height:   1.75;
   color:         rgba(var(--text-rgb), .6);
   margin-bottom: 24px;
   letter-spacing: 0;
@@ -209,6 +209,7 @@
 @media (max-width: 860px) {
   .travel-page  { padding: 60px var(--pad-x); }
   .travel-hero  { grid-template-columns: 1fr; gap: 28px; }
+  .ss-img         { height: 240px; }
   .chapters-grid { grid-template-columns: 1fr; }
   .chapter-card:hover { transform: none; } /* no hover lift on touch */
 
@@ -224,6 +225,7 @@
 
 @media (max-width: 420px) {
   .travel-main-title { font-size: 26px; }
+  .ss-img { height: 200px; }
 }
 
 /* ── LOCATION TAG AUTO-GLOW (touch devices) ─────────────────

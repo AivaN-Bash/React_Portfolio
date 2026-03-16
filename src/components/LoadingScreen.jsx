@@ -3,24 +3,41 @@ import { useEffect, useState, useRef } from "react";
 /**
  * LoadingScreen
  *
- * Persona 3 boot screen — shows once per browser session.
- * Uses a module-level flag (hasBooted) so it never re-renders
- * even if React remounts the tree.
+ * Persona 3 boot sequence — shows once per browser session.
+ * Module-level `hasBooted` flag persists across React remounts.
  *
- * Performance: interval is paused when the tab is hidden
- * so it doesn't run in the background.
+ * Memory safety:
+ *   All timers stored in refs and cleared on unmount.
+ *   Interval pauses when tab is hidden (saves CPU/battery).
  */
 
 const S = {
-  wrap:    { position:"fixed", inset:0, zIndex:9000, background:"#01060f", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:32 },
-  ring1:   { position:"absolute", width:320, height:320, borderRadius:"50%", border:"1px solid rgba(0,200,255,0.18)", animation:"spin 8s linear infinite", borderTopColor:"#00c8ff" },
-  ring2:   { position:"absolute", width:240, height:240, borderRadius:"50%", border:"1px solid rgba(255,215,0,0.1)",  animation:"spinR 12s linear infinite", borderRightColor:"#ffd700" },
-  moon:    { fontSize:52, animation:"moonGlow 1.5s ease-in-out infinite", position:"relative", zIndex:1 },
-  title:   { fontFamily:"'Cinzel',serif",         fontSize:13, fontWeight:700, color:"#e8f4ff", letterSpacing:6,  textTransform:"uppercase", position:"relative", zIndex:1 },
-  arcana:  { fontFamily:"'Share Tech Mono',monospace", fontSize:10, color:"#ffd700",  letterSpacing:4,  opacity:.65, position:"relative", zIndex:1 },
-  barWrap: { width:200, height:2, background:"rgba(255,255,255,0.06)", overflow:"hidden", position:"relative", zIndex:1 },
-  barFill: { height:"100%", background:"linear-gradient(90deg,#00c8ff,#7b61ff)", boxShadow:"0 0 8px rgba(0,200,255,0.5)", transition:"width 0.12s ease" },
-  log:     { fontFamily:"'Share Tech Mono',monospace", fontSize:9, color:"rgba(0,200,255,0.45)", letterSpacing:2, height:14, position:"relative", zIndex:1 },
+  wrap:    { position:"fixed", inset:0, zIndex:9000, background:"#01060f",
+             display:"flex", flexDirection:"column", alignItems:"center",
+             justifyContent:"center", gap:32 },
+  ring1:   { position:"absolute", width:320, height:320, borderRadius:"50%",
+             border:"1px solid rgba(0,200,255,0.18)",
+             animation:"spin 8s linear infinite", borderTopColor:"#00c8ff" },
+  ring2:   { position:"absolute", width:240, height:240, borderRadius:"50%",
+             border:"1px solid rgba(255,215,0,0.1)",
+             animation:"spinR 12s linear infinite", borderRightColor:"#ffd700" },
+  moon:    { fontSize:52, animation:"moonGlow 1.5s ease-in-out infinite",
+             position:"relative", zIndex:1 },
+  title:   { fontFamily:"'Cinzel',serif", fontSize:13, fontWeight:700,
+             color:"#e8f4ff", letterSpacing:6, textTransform:"uppercase",
+             position:"relative", zIndex:1 },
+  arcana:  { fontFamily:"'Share Tech Mono',monospace", fontSize:10,
+             color:"#ffd700", letterSpacing:4, opacity:.65,
+             position:"relative", zIndex:1 },
+  barWrap: { width:200, height:2, background:"rgba(255,255,255,0.06)",
+             overflow:"hidden", position:"relative", zIndex:1 },
+  barFill: { height:"100%",
+             background:"linear-gradient(90deg,#00c8ff,#7b61ff)",
+             boxShadow:"0 0 8px rgba(0,200,255,0.5)",
+             transition:"width 0.12s ease" },
+  log:     { fontFamily:"'Share Tech Mono',monospace", fontSize:9,
+             color:"rgba(0,200,255,0.45)", letterSpacing:2,
+             height:14, position:"relative", zIndex:1 },
 };
 
 const BOOT_LINES = [
@@ -31,7 +48,6 @@ const BOOT_LINES = [
   "SYSTEM READY",
 ];
 
-// Module-level flag — persists across React re-renders
 let hasBooted = false;
 
 export default function LoadingScreen() {
@@ -41,6 +57,8 @@ export default function LoadingScreen() {
   const [fading,   setFading]   = useState(false);
 
   const intervalRef = useRef(null);
+  const fadeTimerRef= useRef(null); // ← stored for cleanup
+  const hideTimerRef= useRef(null); // ← stored for cleanup
   const doneRef     = useRef(false);
   const pctRef      = useRef(0);
 
@@ -48,8 +66,7 @@ export default function LoadingScreen() {
     if (!visible) return;
 
     const tick = () => {
-      // Pause when tab is hidden — don't waste cycles in background
-      if (document.hidden) return;
+      if (document.hidden) return; // pause on hidden tab
 
       pctRef.current = Math.min(pctRef.current + 4, 100);
       const pct = pctRef.current;
@@ -60,8 +77,9 @@ export default function LoadingScreen() {
       if (pct >= 100 && !doneRef.current) {
         doneRef.current = true;
         clearInterval(intervalRef.current);
-        setTimeout(() => setFading(true), 350);
-        setTimeout(() => {
+
+        fadeTimerRef.current = setTimeout(() => setFading(true), 350);
+        hideTimerRef.current = setTimeout(() => {
           hasBooted = true;
           setVisible(false);
         }, 950);
@@ -70,20 +88,30 @@ export default function LoadingScreen() {
 
     intervalRef.current = setInterval(tick, 40);
 
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      // Clean up everything — safe even if called early
+      clearInterval(intervalRef.current);
+      clearTimeout(fadeTimerRef.current);
+      clearTimeout(hideTimerRef.current);
+    };
   }, [visible]);
 
   if (!visible) return null;
 
   return (
     <div
-      style={{ ...S.wrap, opacity: fading ? 0 : 1, transition: "opacity 0.6s ease", pointerEvents: fading ? "none" : "all" }}
+      style={{
+        ...S.wrap,
+        opacity:       fading ? 0 : 1,
+        transition:    "opacity 0.6s ease",
+        pointerEvents: fading ? "none" : "all",
+      }}
       role="status"
       aria-label="Loading portfolio"
     >
-      <div style={S.ring1} aria-hidden="true"/>
-      <div style={S.ring2} aria-hidden="true"/>
-      <div style={S.moon}  aria-hidden="true">🌙</div>
+      <div style={S.ring1}   aria-hidden="true"/>
+      <div style={S.ring2}   aria-hidden="true"/>
+      <div style={S.moon}    aria-hidden="true">🌙</div>
       <div style={S.title}>BEAM · PORTFOLIO</div>
       <div style={S.arcana}>THE FOOL — ARCANA 0</div>
       <div style={S.barWrap} aria-hidden="true">

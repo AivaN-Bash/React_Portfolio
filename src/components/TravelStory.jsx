@@ -16,7 +16,7 @@ export default function TravelStory() {
     cards?.forEach((card, i) => {
       card.style.animation = "none";
       void card.offsetHeight; // force reflow
-      card.style.animation = `fadeUp 0.45s ${i * 0.08}s both`;
+      card.style.animation = `fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) ${i * 0.075}s both`;
     });
   }, []);
 

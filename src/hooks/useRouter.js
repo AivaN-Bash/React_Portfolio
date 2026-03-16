@@ -4,13 +4,17 @@ import { useState, useEffect, useCallback, useRef } from "react";
  * useRouter
  *
  * Syncs page state with the browser History API.
- * Enables: back/forward buttons, direct URL links, shareable URLs.
+ * Back/forward buttons, direct URLs, and shareable links all work.
  *
- * Race condition fix: the transition timeout is stored in a ref
- * and cleared before each new navigation, preventing stale state
- * if navigate() is called before the previous transition ends.
+ * Stability improvements over naive implementation:
+ *   - pageRef mirrors page state so navigate() and the popstate
+ *     handler can read the current page without [page] in their
+ *     dependency arrays. This keeps navigate() referentially
+ *     stable across navigations, preventing unnecessary re-renders
+ *     in consumers (App useMemo, etc.).
+ *   - popstate listener added once on mount, never re-added.
+ *   - timerRef prevents transition race conditions.
  */
-
 
 const PAGE_TITLES = {
   home:     "Beam · Portfolio",
@@ -57,15 +61,27 @@ const TRANSITION_MS = 200;
 export default function useRouter() {
   const [page,          setPage]          = useState(getInitialPage);
   const [transitioning, setTransitioning] = useState(false);
-  const timerRef = useRef(null); // stored so we can cancel on rapid navigation
 
-  // Handle browser back / forward
+  // Ref mirrors state — lets handlers read current page without
+  // being in their dependency arrays (keeps them stable)
+  const pageRef    = useRef(page);
+  const timerRef   = useRef(null);
+
+  // Keep ref in sync with state
+  useEffect(() => { pageRef.current = page; }, [page]);
+
+  // Stamp initial history entry once on mount
+  useEffect(() => {
+    window.history.replaceState({ page }, "", BASE + PAGE_TO_PATH[page]);
+    setPageTitle(page);
+  }, []); // intentional mount-only
+
+  // Back / forward — registered once, uses pageRef so no re-registration
   useEffect(() => {
     const onPop = (e) => {
       const target = e.state?.page || "home";
-      if (target === page) return;
+      if (target === pageRef.current) return;
 
-      // Cancel any in-flight transition
       if (timerRef.current) clearTimeout(timerRef.current);
 
       setTransitioning(true);
@@ -73,6 +89,7 @@ export default function useRouter() {
 
       timerRef.current = setTimeout(() => {
         setPage(target);
+        pageRef.current = target;
         setPageTitle(target);
         setTransitioning(false);
         timerRef.current = null;
@@ -84,35 +101,28 @@ export default function useRouter() {
       window.removeEventListener("popstate", onPop);
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [page]);
+  }, []); // stable — no [page] dep needed
 
-  // Stamp initial history entry with page state
-  useEffect(() => {
-    window.history.replaceState({ page }, "", BASE + PAGE_TO_PATH[page]);
-    setPageTitle(page);
-  }, []); // intentional: mount-only
-
+  // navigate is now stable across page changes — [] dependency
   const navigate = useCallback((next) => {
-    if (next === page) return;
-
-    // Cancel in-flight transition before starting a new one
+    if (next === pageRef.current) return;
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
     }
 
     window.history.pushState({ page: next }, "", BASE + (PAGE_TO_PATH[next] || "/"));
-
     setTransitioning(true);
     window.scrollTo({ top: 0, behavior: "instant" });
 
     timerRef.current = setTimeout(() => {
       setPage(next);
+      pageRef.current = next;
       setPageTitle(next);
       setTransitioning(false);
       timerRef.current = null;
     }, TRANSITION_MS);
-  }, [page]);
+  }, []); // stable — reads pageRef, no state deps
 
   return { page, navigate, transitioning };
 }

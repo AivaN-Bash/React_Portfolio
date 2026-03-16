@@ -1,49 +1,62 @@
 import { useEffect, useRef } from "react";
 
-// ── Cursor with RAF throttle ─────────────────────────────────
-// Raw mousemove fires 200+ times/sec on fast mice.
-// requestAnimationFrame caps updates to 60fps max — much smoother
-// and uses far less CPU.
+/**
+ * Cursor
+ *
+ * Custom P3-themed cursor — outer ring + inner dot.
+ * Uses CSS transform: translate() instead of style.left/top.
+ *
+ * Why transform is faster:
+ *   style.left/top  → triggers layout → paint → composite (3 steps)
+ *   transform       → skips layout and paint → composite only (1 step)
+ *   Both run through requestAnimationFrame at 60fps max.
+ *
+ * Touch / mobile: detected once on mount, cursor hidden entirely.
+ */
 export default function Cursor() {
-  const c    = useRef();
-  const d    = useRef();
-  const pos  = useRef({ x: 0, y: 0 });
-  const raf  = useRef();
+  const ringRef = useRef();
+  const dotRef  = useRef();
+  const posRef  = useRef({ x: -100, y: -100 }); // start off-screen
+  const rafRef  = useRef();
 
   useEffect(() => {
-    // Detect touch — don't run cursor on mobile at all
+    // Skip cursor entirely on touch / no-pointer devices
     if (window.matchMedia("(hover: none)").matches) return;
 
+    const ring = ringRef.current;
+    const dot  = dotRef.current;
+    if (!ring || !dot) return;
+
+    // Show elements now — hidden via CSS until first move
+    ring.style.opacity = "1";
+    dot.style.opacity  = "1";
+
     const onMove = (e) => {
-      pos.current = { x: e.clientX, y: e.clientY };
+      posRef.current = { x: e.clientX, y: e.clientY };
 
-      // Cancel any pending frame before scheduling a new one
-      if (raf.current) cancelAnimationFrame(raf.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
-      raf.current = requestAnimationFrame(() => {
-        const { x, y } = pos.current;
-        if (c.current) {
-          c.current.style.left = x + "px";
-          c.current.style.top  = y + "px";
-        }
-        if (d.current) {
-          d.current.style.left = x + "px";
-          d.current.style.top  = y + "px";
-        }
+      rafRef.current = requestAnimationFrame(() => {
+        const { x, y } = posRef.current;
+        // Single GPU-composited write — no layout, no paint
+        const t = `translate(${x}px, ${y}px)`;
+        ring.style.transform = t;
+        dot.style.transform  = t;
       });
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
+
     return () => {
       window.removeEventListener("mousemove", onMove);
-      if (raf.current) cancelAnimationFrame(raf.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <>
-      <div id="p3c" ref={c} aria-hidden="true"/>
-      <div id="p3d" ref={d} aria-hidden="true"/>
+      <div id="p3c" ref={ringRef} aria-hidden="true"/>
+      <div id="p3d" ref={dotRef}  aria-hidden="true"/>
     </>
   );
 }

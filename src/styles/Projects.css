@@ -13,6 +13,7 @@
   clip-path: polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease);
   overflow: hidden;
+  contain: layout;
 }
 .proj-card::before {
   content: ''; position: absolute; inset: 0;
@@ -72,7 +73,7 @@
   border: 1px solid rgba(var(--text-rgb), .06);
   color: var(--text-muted);
   clip-path: polygon(0 0,calc(100% - 4px) 0,100% 4px,100% 100%,4px 100%,0 calc(100% - 4px));
-  transition: var(--tr);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .proj-card:hover .proj-tag {
   border-color: rgba(var(--accent-rgb),.22); color: var(--accent);
@@ -87,7 +88,7 @@
   font-weight: 500; padding: 8px 16px;
   cursor: pointer; text-decoration: none;
   clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
-  transition: var(--tr);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 .pl-github { color: var(--text-muted); border: 1px solid rgba(var(--text-rgb), .1); background: rgba(var(--text-rgb), .06); }
 .pl-github:hover { color: var(--text); border-color: rgba(var(--text-rgb), .25); }

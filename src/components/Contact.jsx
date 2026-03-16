@@ -14,6 +14,20 @@ function sanitize(str) {
     .trim();
 }
 
+// ── URL safety ───────────────────────────────────────────────
+// Prevents javascript: or data: URI injection in href attributes.
+// Only allows https://, http://, and mailto: protocols.
+function safeHref(url) {
+  if (!url || typeof url !== "string") return null;
+  const trimmed = url.trim().toLowerCase();
+  if (
+    trimmed.startsWith("https://") ||
+    trimmed.startsWith("http://")  ||
+    trimmed.startsWith("mailto:")
+  ) return url.trim();
+  return null; // block anything else
+}
+
 // ── Email validation ─────────────────────────────────────────
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -88,7 +102,6 @@ export default function Contact() {
     try {
       // Simulated send — replace with real service above
       await new Promise(r => setTimeout(r, 1200));
-      console.info("Form data (connect real service):", sanitized);
       setStatus("sent");
     } catch {
       setStatus("error");
@@ -105,19 +118,19 @@ export default function Contact() {
       icon:  "✉",
       label: "Email",
       val:   ME.email,
-      href:  `mailto:${ME.email}`,
+      href:  safeHref(`mailto:${ME.email}`),
     },
     {
       icon:  "⌥",
       label: "GitHub",
       val:   ME.github.replace("https://", ""),
-      href:  ME.github,
+      href:  safeHref(ME.github),
     },
     {
       icon:  "in",
       label: "LinkedIn",
       val:   ME.linkedin.replace("https://", ""),
-      href:  ME.linkedin,
+      href:  safeHref(ME.linkedin),
     },
     {
       icon:  "◎",

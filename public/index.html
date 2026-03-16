@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#01060f" />
     <meta name="description" content="Phawat Tanajiranon — Backend Developer based in Bangkok, Thailand. Node.js, Python, PostgreSQL." />
     <meta name="author" content="Phawat Tanajiranon" />
@@ -33,6 +33,11 @@
       href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Preload first travel photo — loaded before JS executes -->
+    <link rel="preload" as="image"
+      href="%PUBLIC_URL%/photos/dollywood-work.jpg"
+      fetchpriority="high" />
 
     <title>Beam · Portfolio</title>
 

@@ -43,7 +43,7 @@ const MoonSVG = memo(() => (
 ));
 MoonSVG.displayName = "MoonSVG";
 
-const TriSVG = memo(({ size = 40, color = "#00c8ff", op = 0.3, style = {} }) => (
+const TriSVG = memo(({ size = 40, color = "var(--accent)", op = 0.3, style = {} }) => (
   <svg
     width={size} height={size} viewBox="0 0 40 40" fill="none"
     aria-hidden="true"
