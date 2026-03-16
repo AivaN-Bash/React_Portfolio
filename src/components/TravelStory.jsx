@@ -3,14 +3,14 @@ import TRAVEL from "../data/travel";
 import Slideshow from "./Slideshow";
 import useScrollReveal from "../hooks/useScrollReveal";
 
-export default function TravelStory({ setPage }) {
+export default function TravelStory() {
   const heroRef     = useScrollReveal({ delay: 0 });
   const chapRef     = useScrollReveal({ delay: 100 });
 
   return (
     <div className="travel-page">
-      <button className="back-btn" onClick={() => setPage("exp")}>
-        ← Back to Experience
+      <button className="back-btn" onClick={() => window.history.back()}>
+        Back to Experience
       </button>
 
       <div className="travel-hero" ref={heroRef}>

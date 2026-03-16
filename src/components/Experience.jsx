@@ -43,7 +43,7 @@ export default function Experience({ setPage }) {
 
       <div className="exp-list">
         {EXP.map((exp, i) => (
-          <div key={exp.role + i}>
+          <div key={`${exp.company}-${exp.period}`}>
             <ExpCard exp={exp} index={i} setPage={setPage}/>
             {i < EXP.length - 1 && <div className="exp-conn"/>}
           </div>

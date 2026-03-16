@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Beam · Portfolio</title>
+    <!--
+      GitHub Pages SPA fix.
+      When someone visits beam.github.io/React_Portfolio/skills
+      GitHub serves this 404.html. We redirect back to index.html
+      with the path encoded in the URL query string.
+      index.html then reads it and navigates to the right page.
+    -->
+    <script>
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + 1).join('/') +
+        '/?p=' + l.pathname.slice(1).split('/').slice(1).join('/') +
+        (l.search ? '&q=' + l.search.slice(1) : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -1,61 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-// ── Inline styles (no external CSS needed — it unmounts after load) ──────────
+/**
+ * LoadingScreen
+ *
+ * Persona 3 boot screen — shows once per browser session.
+ * Uses a module-level flag (hasBooted) so it never re-renders
+ * even if React remounts the tree.
+ *
+ * Performance: interval is paused when the tab is hidden
+ * so it doesn't run in the background.
+ */
+
 const S = {
-  wrap: {
-    position: "fixed", inset: 0, zIndex: 9000,
-    background: "#01060f",
-    display: "flex", flexDirection: "column",
-    alignItems: "center", justifyContent: "center",
-    gap: 32,
-    transition: "opacity 0.6s ease",
-  },
-  ring1: {
-    position: "absolute",
-    width: 320, height: 320, borderRadius: "50%",
-    border: "1px solid rgba(0,200,255,0.2)",
-    animation: "spin 8s linear infinite",
-    borderTopColor: "#00c8ff",
-  },
-  ring2: {
-    position: "absolute",
-    width: 240, height: 240, borderRadius: "50%",
-    border: "1px solid rgba(255,215,0,0.12)",
-    animation: "spinR 12s linear infinite",
-    borderRightColor: "#ffd700",
-  },
-  moon: { fontSize: 52, animation: "moonGlow 1.5s ease-in-out infinite", position: "relative", zIndex: 1 },
-  title: {
-    fontFamily: "'Cinzel', serif",
-    fontSize: 13, fontWeight: 700,
-    color: "#e8f4ff", letterSpacing: 6,
-    textTransform: "uppercase",
-    position: "relative", zIndex: 1,
-  },
-  arcana: {
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: 10, color: "#ffd700",
-    letterSpacing: 4, opacity: 0.7,
-    position: "relative", zIndex: 1,
-  },
-  barWrap: {
-    width: 200, height: 2,
-    background: "rgba(255,255,255,0.07)",
-    borderRadius: 1, overflow: "hidden",
-    position: "relative", zIndex: 1,
-  },
-  barFill: {
-    height: "100%",
-    background: "linear-gradient(90deg, #00c8ff, #7b61ff)",
-    boxShadow: "0 0 8px rgba(0,200,255,0.6)",
-    transition: "width 0.15s ease",
-  },
-  log: {
-    fontFamily: "'Share Tech Mono', monospace",
-    fontSize: 9, color: "rgba(0,200,255,0.5)",
-    letterSpacing: 2, height: 14,
-    position: "relative", zIndex: 1,
-  },
+  wrap:    { position:"fixed", inset:0, zIndex:9000, background:"#01060f", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:32 },
+  ring1:   { position:"absolute", width:320, height:320, borderRadius:"50%", border:"1px solid rgba(0,200,255,0.18)", animation:"spin 8s linear infinite", borderTopColor:"#00c8ff" },
+  ring2:   { position:"absolute", width:240, height:240, borderRadius:"50%", border:"1px solid rgba(255,215,0,0.1)",  animation:"spinR 12s linear infinite", borderRightColor:"#ffd700" },
+  moon:    { fontSize:52, animation:"moonGlow 1.5s ease-in-out infinite", position:"relative", zIndex:1 },
+  title:   { fontFamily:"'Cinzel',serif",         fontSize:13, fontWeight:700, color:"#e8f4ff", letterSpacing:6,  textTransform:"uppercase", position:"relative", zIndex:1 },
+  arcana:  { fontFamily:"'Share Tech Mono',monospace", fontSize:10, color:"#ffd700",  letterSpacing:4,  opacity:.65, position:"relative", zIndex:1 },
+  barWrap: { width:200, height:2, background:"rgba(255,255,255,0.06)", overflow:"hidden", position:"relative", zIndex:1 },
+  barFill: { height:"100%", background:"linear-gradient(90deg,#00c8ff,#7b61ff)", boxShadow:"0 0 8px rgba(0,200,255,0.5)", transition:"width 0.12s ease" },
+  log:     { fontFamily:"'Share Tech Mono',monospace", fontSize:9, color:"rgba(0,200,255,0.45)", letterSpacing:2, height:14, position:"relative", zIndex:1 },
 };
 
 const BOOT_LINES = [
@@ -66,52 +31,65 @@ const BOOT_LINES = [
   "SYSTEM READY",
 ];
 
-export default function LoadingScreen({ onDone }) {
+// Module-level flag — persists across React re-renders
+let hasBooted = false;
+
+export default function LoadingScreen() {
+  const [visible,  setVisible]  = useState(!hasBooted);
   const [progress, setProgress] = useState(0);
   const [logLine,  setLogLine]  = useState(BOOT_LINES[0]);
   const [fading,   setFading]   = useState(false);
 
+  const intervalRef = useRef(null);
+  const doneRef     = useRef(false);
+  const pctRef      = useRef(0);
+
   useEffect(() => {
-    let pct = 0;
-    const interval = setInterval(() => {
-      pct += 4;
-      setProgress(Math.min(pct, 100));
+    if (!visible) return;
 
-      // Update boot log text as progress goes up
-      const idx = Math.min(Math.floor(pct / 22), BOOT_LINES.length - 1);
-      setLogLine(BOOT_LINES[idx]);
+    const tick = () => {
+      // Pause when tab is hidden — don't waste cycles in background
+      if (document.hidden) return;
 
-      if (pct >= 100) {
-        clearInterval(interval);
-        // Short pause then fade out
-        setTimeout(() => setFading(true), 400);
-        setTimeout(() => onDone(), 1000);
+      pctRef.current = Math.min(pctRef.current + 4, 100);
+      const pct = pctRef.current;
+
+      setProgress(pct);
+      setLogLine(BOOT_LINES[Math.min(Math.floor(pct / 22), BOOT_LINES.length - 1)]);
+
+      if (pct >= 100 && !doneRef.current) {
+        doneRef.current = true;
+        clearInterval(intervalRef.current);
+        setTimeout(() => setFading(true), 350);
+        setTimeout(() => {
+          hasBooted = true;
+          setVisible(false);
+        }, 950);
       }
-    }, 40); // ~1.6s total
+    };
 
-    return () => clearInterval(interval);
-  }, [onDone]);
+    intervalRef.current = setInterval(tick, 40);
+
+    return () => clearInterval(intervalRef.current);
+  }, [visible]);
+
+  if (!visible) return null;
 
   return (
-    <div style={{ ...S.wrap, opacity: fading ? 0 : 1, pointerEvents: fading ? "none" : "all" }}>
-      {/* Rotating rings */}
-      <div style={S.ring1} />
-      <div style={S.ring2} />
-
-      {/* Moon icon */}
-      <div style={S.moon}>🌙</div>
-
-      {/* Title */}
+    <div
+      style={{ ...S.wrap, opacity: fading ? 0 : 1, transition: "opacity 0.6s ease", pointerEvents: fading ? "none" : "all" }}
+      role="status"
+      aria-label="Loading portfolio"
+    >
+      <div style={S.ring1} aria-hidden="true"/>
+      <div style={S.ring2} aria-hidden="true"/>
+      <div style={S.moon}  aria-hidden="true">🌙</div>
       <div style={S.title}>BEAM · PORTFOLIO</div>
       <div style={S.arcana}>THE FOOL — ARCANA 0</div>
-
-      {/* Progress bar */}
-      <div style={S.barWrap}>
-        <div style={{ ...S.barFill, width: `${progress}%` }} />
+      <div style={S.barWrap} aria-hidden="true">
+        <div style={{ ...S.barFill, width: `${progress}%` }}/>
       </div>
-
-      {/* Boot log */}
-      <div style={S.log}>{logLine}</div>
+      <div style={S.log} aria-live="polite">{logLine}</div>
     </div>
   );
 }

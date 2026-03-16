@@ -3,9 +3,46 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#050810" />
-    <meta name="description" content="Portfolio — Full Stack Developer" />
-    <title>My Portfolio</title>
+    <meta name="theme-color" content="#01060f" />
+    <meta name="description" content="Phawat Tanajiranon — Backend Developer based in Bangkok, Thailand. Node.js, Python, PostgreSQL." />
+    <meta name="author" content="Phawat Tanajiranon" />
+
+    <!-- Open Graph -->
+    <meta property="og:title"       content="Beam — Backend Developer" />
+    <meta property="og:description" content="Bangkok-based backend dev. Node.js, Python, PostgreSQL and more." />
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://AivaN-Bash.github.io/React_Portfolio" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card"        content="summary" />
+    <meta name="twitter:title"       content="Beam — Backend Developer" />
+    <meta name="twitter:description" content="Bangkok-based backend dev. Node.js, Python, PostgreSQL." />
+
+    <!-- Performance: open font connection before CSS requests it -->
+    <link rel="preconnect"   href="https://fonts.googleapis.com" />
+    <link rel="preconnect"   href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+    <!-- Fonts with font-display=swap to prevent invisible text flash -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Beam · Portfolio</title>
+
+    <!-- GitHub Pages SPA redirect handler -->
+    <script>
+      (function() {
+        var search = window.location.search;
+        if (!search) return;
+        var p = new URLSearchParams(search).get('p');
+        if (p) {
+          var base = window.location.pathname.split('?')[0];
+          history.replaceState(null, null, base + (p ? '/' + p : '') + window.location.hash);
+        }
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -1,25 +1,11 @@
-import { useState, useEffect } from "react";
+import { memo } from "react";
 import "../styles/Home.css";
 import ME from "../data/me";
-import useTilt from "../hooks/useTilt";
+import useTilt   from "../hooks/useTilt";
+import useTyping from "../hooks/useTyping";
+import useRipple  from "../hooks/useRipple";
 
-// ── SVG helpers ───────────────────────────────────────────────
-const MoonSVG = () => (
-  <svg width="120" height="120" viewBox="0 0 120 120" fill="none"
-    style={{ position:"absolute", opacity:.1, top:"-20px", right:"-20px", pointerEvents:"none" }}>
-    <circle cx="60" cy="60" r="50" stroke="#00c8ff" strokeWidth="1"/>
-    <path d="M60 10 C35 10 15 32 15 60 C15 88 35 110 60 110 C48 95 42 78 42 60 C42 42 48 25 60 10Z"
-      fill="#00c8ff" opacity=".25"/>
-  </svg>
-);
-const Tri = ({ size=40, color="#00c8ff", op=0.3, style={} }) => (
-  <svg width={size} height={size} viewBox="0 0 40 40" fill="none"
-    style={{ ...style, opacity: op, pointerEvents:"none" }}>
-    <polygon points="20,2 38,36 2,36" stroke={color} strokeWidth="1.5" fill="none"/>
-  </svg>
-);
-
-// ── Typing animation ──────────────────────────────────────────
+// ── Constants ────────────────────────────────────────────────
 const ROLES = [
   "Backend Developer",
   "API Engineer",
@@ -27,84 +13,97 @@ const ROLES = [
   "Python Developer",
   "Database Designer",
 ];
-function useTyping(words, speed=80, pause=1800) {
-  const [display,  setDisplay]  = useState("");
-  const [wordIdx,  setWordIdx]  = useState(0);
-  const [charIdx,  setCharIdx]  = useState(0);
-  const [deleting, setDeleting] = useState(false);
-  useEffect(() => {
-    const current = words[wordIdx];
-    let delay = deleting ? speed / 2 : speed;
-    if (!deleting && charIdx === current.length) delay = pause;
-    const t = setTimeout(() => {
-      if (!deleting && charIdx < current.length) {
-        setDisplay(current.slice(0, charIdx + 1)); setCharIdx(i => i + 1);
-      } else if (!deleting && charIdx === current.length) {
-        setDeleting(true);
-      } else if (deleting && charIdx > 0) {
-        setDisplay(current.slice(0, charIdx - 1)); setCharIdx(i => i - 1);
-      } else {
-        setDeleting(false); setWordIdx(i => (i + 1) % words.length);
-      }
-    }, delay);
-    return () => clearTimeout(t);
-  }, [charIdx, deleting, wordIdx, words, speed, pause]);
-  return display;
-}
 
-// ── Tech stack ────────────────────────────────────────────────
 const STACK = [
-  { name:"Node.js",    color:"#68a063" },
-  { name:"Python",     color:"#3b8ede" },
-  { name:"PostgreSQL", color:"#336791" },
-  { name:"MongoDB",    color:"#4caf50" },
-  { name:"Docker",     color:"#2496ed" },
-  { name:"Redis",      color:"#dc382d" },
-  { name:"Git",        color:"#f05032" },
-  { name:"AWS",        color:"#ff9900" },
+  { name: "Node.js",    color: "#68a063" },
+  { name: "Python",     color: "#3b8ede" },
+  { name: "PostgreSQL", color: "#336791" },
+  { name: "MongoDB",    color: "#4caf50" },
+  { name: "Docker",     color: "#2496ed" },
+  { name: "Redis",      color: "#dc382d" },
+  { name: "Git",        color: "#f05032" },
+  { name: "AWS",        color: "#ff9900" },
 ];
 
-// ── Glitch name component ─────────────────────────────────────
-function GlitchName({ text }) {
-  return (
-    <span className="glitch" data-text={text}>
-      {text}
-    </span>
-  );
-}
+// ── Sub-components — memoized so they never re-render ────────
 
+const MoonSVG = memo(() => (
+  <svg
+    width="120" height="120" viewBox="0 0 120 120" fill="none"
+    aria-hidden="true"
+    style={{ position: "absolute", opacity: .1, top: "-20px", right: "-20px",
+             pointerEvents: "none", color: "var(--accent)" }}
+  >
+    <circle cx="60" cy="60" r="50" stroke="currentColor" strokeWidth="1"/>
+    <path
+      d="M60 10 C35 10 15 32 15 60 C15 88 35 110 60 110 C48 95 42 78 42 60 C42 42 48 25 60 10Z"
+      fill="currentColor" opacity=".25"
+    />
+  </svg>
+));
+MoonSVG.displayName = "MoonSVG";
+
+const TriSVG = memo(({ size = 40, color = "#00c8ff", op = 0.3, style = {} }) => (
+  <svg
+    width={size} height={size} viewBox="0 0 40 40" fill="none"
+    aria-hidden="true"
+    style={{ ...style, opacity: op, pointerEvents: "none" }}
+  >
+    <polygon points="20,2 38,36 2,36" stroke={color} strokeWidth="1.5" fill="none"/>
+  </svg>
+));
+TriSVG.displayName = "TriSVG";
+
+const GlitchName = memo(({ text }) => (
+  <span className="glitch" data-text={text}>{text}</span>
+));
+GlitchName.displayName = "GlitchName";
+
+// ── Component ────────────────────────────────────────────────
 export default function Home({ setPage }) {
   const typedRole = useTyping(ROLES);
   const { cardRef, glowRef } = useTilt(11);
-  const parts  = ME.name.split(" ");
-  const middle = parts.slice(0, -1).join(" ");
-  const last   = parts.slice(-1)[0];
+  const ripple = useRipple();
+
+  const nameParts = ME.name.split(" ");
+  const firstName = nameParts.slice(0, -1).join(" ");
+  const lastName  = nameParts.at(-1);
+
+  // Use PUBLIC_URL so CV works on both localhost and GitHub Pages
+  const cvHref = `${process.env.PUBLIC_URL || ""}/cv/Beam-CV.pdf`;
 
   return (
     <section className="hero">
-      {/* ── Left: text ── */}
-      <div>
-        <div className="h-over">Bangkok, Thailand · Open to Work</div>
+
+      {/* ── Left column — text content ── */}
+      <div className="hero-content">
+
+        <p className="h-over" aria-label="Location and status">
+          Bangkok, Thailand · Open to Work
+        </p>
 
         <h1 className="hero-name">
-          {middle}<br/>
-          {/* Glitch effect on last name */}
-          <span className="gold"><GlitchName text={last}/></span>
+          {firstName}<br/>
+          <span className="gold">
+            <GlitchName text={lastName}/>
+          </span>
         </h1>
 
-        <div className="hero-nick">「 {ME.nickname.toUpperCase()} 」</div>
+        <p className="hero-nick" aria-label="Nickname">
+          「 {ME.nickname.toUpperCase()} 」
+        </p>
 
         {/* Typing animation */}
-        <div className="hero-typing">
-          <span className="typing-prefix">&gt;&nbsp;</span>
+        <div className="hero-typing" aria-label={`Role: ${typedRole}`} aria-live="polite">
+          <span className="typing-prefix" aria-hidden="true">&gt;&nbsp;</span>
           <span className="typing-text">{typedRole}</span>
-          <span className="typing-cursor">_</span>
+          <span className="typing-cursor" aria-hidden="true">_</span>
         </div>
 
         <p className="hero-about">{ME.about}</p>
 
-        {/* P3 status bars */}
-        <div className="sb-wrap">
+        {/* P3-style status bars — decorative */}
+        <div className="sb-wrap" aria-hidden="true">
           <div className="sb-row">
             <span className="sb-lbl">EXP</span>
             <div className="sb-track"><div className="sb-fill sb-hp"/></div>
@@ -117,56 +116,71 @@ export default function Home({ setPage }) {
           </div>
         </div>
 
-        {/* Buttons */}
+        {/* CTA buttons */}
         <div className="hero-btns">
-          <button className="btn-p" onClick={() => setPage("contact")}>
+          <button {...ripple} className="btn-p ripple-origin" onClick={() => setPage("contact")}>
             <span>✉ Contact Me</span>
           </button>
-          <button className="btn-s" onClick={() => setPage("projects")}>
+          <button {...ripple} className="btn-s ripple-origin" onClick={() => setPage("projects")}>
             ▶ View Projects
           </button>
-          <a className="btn-cv" href="./cv/Beam-CV.pdf" download>
+          <a
+            className="btn-cv"
+            href={cvHref}
+            download="Beam-CV.pdf"
+            aria-label="Download CV as PDF"
+          >
             ↓ Download CV
           </a>
         </div>
 
-        {/* Tech stack pills */}
+        {/* Tech stack */}
         <div className="stack-row">
-          <span className="stack-label">STACK</span>
-          <div className="stack-pills">
+          <span className="stack-label" aria-hidden="true">STACK</span>
+          <ul className="stack-pills" aria-label="Tech stack">
             {STACK.map(s => (
-              <span key={s.name} className="stack-pill" style={{"--pill-color": s.color}}>
+              <li
+                key={s.name}
+                className="stack-pill"
+                style={{ "--pill-color": s.color }}
+              >
                 {s.name}
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
 
-      {/* ── Right: Persona card with 3D tilt ── */}
-      <div className="p-frame">
-        <div className="p-ring1"/><div className="p-ring2"/>
-        <div className="p-tr1"><Tri size={28} color="#00c8ff" op={0.55}/></div>
-        <div className="p-tr2"><Tri size={20} color="#ffd700" op={0.45}/></div>
+      {/* ── Right column — Persona card ── */}
+      <div className="p-frame" aria-hidden="true">
+        <div className="p-ring1"/>
+        <div className="p-ring2"/>
+        <div className="p-tr1">
+          <TriSVG size={28} color="var(--accent)" op={0.55}/>
+        </div>
+        <div className="p-tr2">
+          <TriSVG size={20} color="var(--accent2)" op={0.45}/>
+        </div>
 
-        {/* cardRef = tilt target */}
         <div className="p-card" ref={cardRef}>
           <MoonSVG/>
-          {/* glowRef = cursor glow highlight layer */}
           <div ref={glowRef} className="p-card-glow"/>
           <div className="p-card-in">
             <div className="p-arcana">{ME.arcana}</div>
             <div className="p-symbol">🌙</div>
-            <div className="p-cname">{parts[0]}<br/>{last}</div>
+            <div className="p-cname">{firstName}<br/>{lastName}</div>
             <div className="p-cnick">「 {ME.nickname} 」</div>
             <div className="p-bar"/>
             <div className="p-crole">{ME.role}</div>
             <div className="p-dots">
-              {[...Array(5)].map((_,i) => <div key={i} className={`p-dot${i<3?" on":""}`}/>)}
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className={`p-dot${i < 3 ? " on" : ""}`}/>
+              ))}
             </div>
           </div>
         </div>
       </div>
+
     </section>
   );
 }

@@ -1,0 +1,163 @@
+/* ============================================================
+   THEME PICKER
+   Floating panel — bottom left corner
+   ============================================================ */
+
+.tp-wrap {
+  position: fixed;
+  bottom:   24px;
+  left:     24px;
+  z-index:  500;
+  display:  flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* ── Trigger button ─────────────────────────────────────────── */
+.tp-trigger {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     0 14px;
+  height:      38px;
+  background:  rgba(var(--bg2-rgb), 0.94);
+  border:      1px solid rgba(var(--accent-rgb), 0.28);
+  color:       var(--text-muted);
+  cursor:      pointer;
+  font-family: var(--mono);
+  font-size:   9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  clip-path: polygon(
+    0 0, calc(100% - 8px) 0, 100% 8px,
+    100% 100%, 8px 100%, 0 calc(100% - 8px)
+  );
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.tp-trigger:hover,
+.tp-trigger.open {
+  border-color: rgba(var(--accent-rgb), 0.6);
+  color: var(--accent);
+}
+.tp-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.tp-dot {
+  width:         10px;
+  height:        10px;
+  border-radius: 50%;
+  flex-shrink:   0;
+  box-shadow:    0 0 6px currentColor;
+  transition:    background 0.3s ease;
+}
+
+/* ── Panel ──────────────────────────────────────────────────── */
+.tp-panel {
+  display:       flex;
+  flex-direction: column;
+  gap:           4px;
+  background:    rgba(var(--bg2-rgb), 0.97);
+  border:        1px solid rgba(var(--accent-rgb), 0.18);
+  padding:       12px;
+  clip-path: polygon(
+    0 0, calc(100% - 12px) 0, 100% 12px,
+    100% 100%, 12px 100%, 0 calc(100% - 12px)
+  );
+  backdrop-filter: blur(24px);
+  min-width: 200px;
+  /* Hidden by default */
+  opacity:        0;
+  transform:      translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.tp-panel.open {
+  opacity:        1;
+  transform:      translateY(0);
+  pointer-events: all;
+}
+
+.tp-panel-title {
+  font-family:    var(--mono);
+  font-size:      9px;
+  letter-spacing: 0.2em;
+  color:          var(--text-dim);
+  text-transform: uppercase;
+  padding:        0 4px 8px;
+  border-bottom:  1px solid rgba(var(--accent-rgb), 0.1);
+  margin-bottom:  4px;
+}
+
+/* ── Theme option ───────────────────────────────────────────── */
+.tp-option {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  padding:     8px 10px;
+  background:  none;
+  border:      1px solid transparent;
+  cursor:      pointer;
+  clip-path: polygon(
+    0 0, calc(100% - 6px) 0, 100% 6px,
+    100% 100%, 6px 100%, 0 calc(100% - 6px)
+  );
+  transition:  background 0.18s ease, border-color 0.18s ease;
+  width:       100%;
+  text-align:  left;
+}
+.tp-option:hover {
+  background:    rgba(var(--accent-rgb), 0.07);
+  border-color:  rgba(var(--accent-rgb), 0.2);
+}
+.tp-option.on {
+  background:    rgba(var(--accent-rgb), 0.1);
+  border-color:  rgba(var(--accent-rgb), 0.35);
+}
+.tp-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.tp-swatch {
+  width:         14px;
+  height:        14px;
+  border-radius: 50%;
+  flex-shrink:   0;
+  box-shadow:    0 0 8px rgba(0,0,0,.3);
+}
+
+.tp-option-body {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+  flex:           1;
+}
+.tp-option-name {
+  font-family:    var(--mono);
+  font-size:      10px;
+  letter-spacing: 0.1em;
+  color:          var(--text);
+  text-transform: uppercase;
+}
+.tp-option-desc {
+  font-family: var(--body);
+  font-size:   11px;
+  color:       var(--text-muted);
+  letter-spacing: 0;
+}
+
+.tp-check {
+  font-size: 11px;
+  color:     var(--accent);
+  flex-shrink: 0;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .tp-wrap   { bottom: 80px; left: 16px; }
+  .tp-trigger-label { display: none; }
+}
