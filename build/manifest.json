@@ -1,0 +1,19 @@
+{
+  "name": "Beam · Portfolio",
+  "short_name": "Beam",
+  "description": "Phawat Tanajiranon — Backend Developer",
+  "start_url": "/React_Portfolio/",
+  "scope": "/React_Portfolio/",
+  "display": "standalone",
+  "background_color": "#01060f",
+  "theme_color": "#01060f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/React_Portfolio/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

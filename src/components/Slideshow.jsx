@@ -1,16 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import "../styles/Slideshow.css";
 
-// ── Swipe ────────────────────────────────────────────────────
 function useSwipe(onLeft, onRight) {
   const startX = useRef(null);
+  const startY = useRef(null);
   return {
-    onTouchStart: (e) => { startX.current = e.touches[0].clientX; },
-    onTouchEnd:   (e) => {
+    onTouchStart: (e) => {
+      startX.current = e.touches[0].clientX;
+      startY.current = e.touches[0].clientY;
+    },
+    onTouchEnd: (e) => {
       if (startX.current === null) return;
-      const diff = startX.current - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) diff > 0 ? onLeft() : onRight();
+      const dx = startX.current - e.changedTouches[0].clientX;
+      const dy = Math.abs(e.changedTouches[0].clientY - startY.current);
+      if (Math.abs(dx) > 40 && Math.abs(dx) > dy) {
+        dx > 0 ? onLeft() : onRight();
+      }
       startX.current = null;
+      startY.current = null;
     },
   };
 }
@@ -25,7 +32,6 @@ export default function Slideshow({ photos }) {
   const next = useCallback(() => go((idx + 1) % photos.length), [idx, photos.length, go]);
   const prev = useCallback(() => go((idx - 1 + photos.length) % photos.length), [idx, photos.length, go]);
 
-  // Pause when tab hidden — saves CPU/battery
   useEffect(() => {
     const fn = () => { if (document.hidden) clearTimeout(timer.current); };
     document.addEventListener("visibilitychange", fn);
@@ -38,22 +44,19 @@ export default function Slideshow({ photos }) {
     return () => clearTimeout(timer.current);
   }, [playing, next]);
 
-  const swipe = useSwipe(next, prev);
-
+  const swipe   = useSwipe(next, prev);
   const current = photos[idx];
   const total   = photos.length;
 
   return (
-    <div className="ss-wrap" {...swipe}>
+    <div className="ss-wrap" {...swipe} role="region" aria-label="Photo slideshow">
 
-      {/* ── Progress bar (top edge) ── */}
       {playing && (
         <div className="ss-progress" aria-hidden="true">
-          <div className="ss-progress-fill" key={key} />
+          <div className="ss-progress-fill" key={key}/>
         </div>
       )}
 
-      {/* ── Photo ── */}
       <div className="ss-photo">
         <img
           key={idx}
@@ -61,33 +64,24 @@ export default function Slideshow({ photos }) {
           alt={current.caption}
           className="ss-img"
           loading={idx === 0 ? "eager" : "lazy"}
-        fetchPriority={idx === 0 ? "high" : "auto"}
+          fetchPriority={idx === 0 ? "high" : "auto"}
           decoding="async"
+          draggable="false"
         />
-        {/* Gradient so caption is readable */}
-        <div className="ss-gradient" aria-hidden="true" />
-
-        {/* Caption — overlaid on photo */}
+        <div className="ss-gradient" aria-hidden="true"/>
         <div className="ss-caption">
-          <span className="ss-counter">
+          <span className="ss-counter" aria-label={`Photo ${idx + 1} of ${total}`}>
             {String(idx + 1).padStart(2, "0")}
-            <span className="ss-counter-sep"> / </span>
+            <span aria-hidden="true"> / </span>
             {String(total).padStart(2, "0")}
           </span>
           <p className="ss-caption-text">{current.caption}</p>
         </div>
       </div>
 
-      {/* ── Controls bar ── */}
       <div className="ss-bar">
-
-        {/* Prev */}
-        <button className="ss-arrow" onClick={prev} aria-label="Previous">
-          ‹
-        </button>
-
-        {/* Dots — centred */}
-        <div className="ss-dots" role="tablist" aria-label="Slides">
+        <button className="ss-arrow" onClick={prev} aria-label="Previous photo">‹</button>
+        <div className="ss-dots" role="tablist" aria-label="Go to photo">
           {photos.map((_, i) => (
             <button
               key={i}
@@ -99,27 +93,19 @@ export default function Slideshow({ photos }) {
             />
           ))}
         </div>
-
-        {/* Auto toggle */}
         <button
           className={`ss-auto${playing ? " on" : ""}`}
           onClick={() => setPlay(p => !p)}
           aria-label={playing ? "Pause" : "Play"}
+          aria-pressed={playing}
         >
           {playing ? "⏸" : "▶"}
           <span className="ss-auto-label">AUTO</span>
         </button>
-
-        {/* Next */}
-        <button className="ss-arrow" onClick={next} aria-label="Next">
-          ›
-        </button>
-
+        <button className="ss-arrow" onClick={next} aria-label="Next photo">›</button>
       </div>
 
-      {/* Swipe hint — touch only */}
       <div className="ss-swipe-hint" aria-hidden="true">swipe</div>
-
     </div>
   );
 }
