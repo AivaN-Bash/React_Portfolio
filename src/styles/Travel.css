@@ -6,73 +6,143 @@
   margin: 0 auto;
 }
 
-/* Back button */
+/* ── Back button ────────────────────────────────────────────── */
 .back-btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--text-muted); background: none; border: none;
-  cursor: pointer; transition: var(--tr);
-  margin-bottom: 48px; padding: 10px 0;
+  display:     inline-flex;
+  align-items: center;
+  gap:         8px;
+  font-family: var(--mono);
+  font-size:   10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color:       var(--text-muted);
+  background:  none;
+  border:      none;
+  cursor:      pointer;
+  margin-bottom: 48px;
+  padding:     10px 0;
+  transition:  color 0.2s ease;
 }
-.back-btn::before { content: "←"; font-size: 14px; transition: var(--tr); }
+.back-btn::before {
+  content:    "←";
+  font-size:  14px;
+  display:    inline-block;
+  transition: transform 0.2s ease;
+}
 .back-btn:hover         { color: var(--accent); }
 .back-btn:hover::before { transform: translateX(-4px); }
 
-/* ── HERO ───────────────────────────────────────────────────── */
+/* ── Hero grid ──────────────────────────────────────────────── */
 .travel-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px; align-items: center;
+  gap: 48px;
+  align-items: center;
   margin-bottom: 72px;
 }
+
+/* Arcana badge */
 .travel-arcana-badge {
-  font-family: var(--hd); font-size: 9px;
-  color: var(--accent2); letter-spacing: 0.3em;
-  border: 1px solid rgba(var(--accent2-rgb),.22);
-  padding: 4px 14px; display: inline-block; margin-bottom: 16px;
-  clip-path: polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,7px 100%,0 calc(100% - 7px));
+  font-family:    var(--hd);
+  font-size:      9px;
+  color:          var(--accent2);
+  letter-spacing: 0.3em;
+  border:         1px solid rgba(var(--accent2-rgb), .22);
+  padding:        4px 14px;
+  display:        inline-block;
+  margin-bottom:  16px;
+  clip-path: polygon(
+    0 0, calc(100% - 7px) 0, 100% 7px,
+    100% 100%, 7px 100%, 0 calc(100% - 7px)
+  );
 }
+
+/* Title */
 .travel-main-title {
-  font-family: var(--hd);
-  font-size: clamp(28px, 4vw, 50px);
-  font-weight: 900; color: var(--text);
-  margin-bottom: 8px; line-height: 1.1;
+  font-family:  var(--hd);
+  font-size:    clamp(28px, 4vw, 50px);
+  font-weight:  900;
+  color:        var(--text);
+  margin-bottom: 8px;
+  line-height:  1.1;
 }
-.travel-main-title .gold { color: var(--accent2); text-shadow: var(--glow-gold); }
-.travel-year  {
-  font-family: var(--mono); font-size: 11px;
-  color: var(--accent); letter-spacing: 0.3em;
-  margin-bottom: 18px; opacity: .75;
+.travel-main-title .gold {
+  color:       var(--accent2);
+  text-shadow: var(--glow-gold);
 }
+
+/* Year */
+.travel-year {
+  font-family:    var(--mono);
+  font-size:      11px;
+  color:          var(--accent);
+  letter-spacing: 0.3em;
+  margin-bottom:  18px;
+  opacity:        .75;
+}
+
+/* Intro text */
 .travel-intro {
-  font-family: var(--body); font-size: 1rem;
-  line-height: 1.8; color: rgba(var(--text-rgb),.6);
-  margin-bottom: 24px; letter-spacing: 0; font-weight: 400;
+  font-family:   var(--body);
+  font-size:     1rem;
+  line-height:   1.8;
+  color:         rgba(var(--text-rgb), .6);
+  margin-bottom: 24px;
+  letter-spacing: 0;
+  font-weight:   400;
 }
-.travel-locations { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ── Location tags ──────────────────────────────────────────── */
+/*
+  Semantic list — removes default list styling.
+  Desktop: P3 cut-corner chips.
+  Mobile:  rounded pills (clip-path looks jagged at small sizes).
+*/
+.travel-locations {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       8px;
+  list-style: none;
+  padding:   0;
+  margin:    0;
+}
 .travel-loc-tag {
-  font-family: var(--mono); font-size: 9px;
-  padding: 4px 12px;
-  background: rgba(var(--accent2-rgb),.07);
-  border: 1px solid rgba(var(--accent2-rgb),.18);
-  color: var(--accent2);
-  clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
+  font-family: var(--mono);
+  font-size:   9px;
+  padding:     5px 12px;
+  background:  rgba(var(--accent2-rgb), .07);
+  border:      1px solid rgba(var(--accent2-rgb), .18);
+  color:       var(--accent2);
+  clip-path: polygon(
+    0 0, calc(100% - 5px) 0, 100% 5px,
+    100% 100%, 5px 100%, 0 calc(100% - 5px)
+  );
+  white-space: nowrap;
+  letter-spacing: 0.06em;
 }
 
-/* Slideshow styles live in Slideshow.css */
+/* ── Slideshow ──────────────────────────────────────────────── */
+/* Full styles in Slideshow.css */
 
-/* ── CHAPTERS ───────────────────────────────────────────────── */
+/* ── Chapter cards ──────────────────────────────────────────── */
 .travel-chapters { margin-top: 64px; }
-.chapters-title  {
-  font-family: var(--hd); font-size: 18px; font-weight: 700;
-  color: var(--text); letter-spacing: 0.06em;
-  margin-bottom: 28px;
-  display: flex; align-items: center; gap: 16px;
+
+.chapters-title {
+  font-family:    var(--hd);
+  font-size:      18px;
+  font-weight:    700;
+  color:          var(--text);
+  letter-spacing: 0.06em;
+  margin-bottom:  28px;
+  display:        flex;
+  align-items:    center;
+  gap:            16px;
 }
 .chapters-title::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, rgba(var(--accent-rgb),.25), transparent);
+  content:    '';
+  flex:       1;
+  height:     1px;
+  background: linear-gradient(90deg, rgba(var(--accent-rgb), .25), transparent);
 }
 
 .chapters-grid {
@@ -80,40 +150,117 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 14px;
 }
+
 .chapter-card {
   background: rgba(var(--bg2-rgb), .85);
-  border: 1px solid rgba(var(--accent-rgb),.09);
-  padding: 24px;
-  clip-path: polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
-  transition: var(--tr);
-  animation: fadeUp .5s both;
-  contain: layout;
+  border:     1px solid rgba(var(--accent-rgb), .09);
+  padding:    24px;
+  clip-path: polygon(
+    0 0, calc(100% - 14px) 0, 100% 14px,
+    100% 100%, 14px 100%, 0 calc(100% - 14px)
+  );
+  transition: transform 0.28s var(--ease), border-color 0.28s var(--ease);
+  contain:    layout;
 }
-.chapter-card:hover { transform: translateY(-3px); border-color: rgba(var(--accent-rgb),.28); }
-.chapter-icon  { font-size: 30px; margin-bottom: 12px; display: block; line-height: 1; }
+.chapter-card:hover {
+  transform:    translateY(-3px);
+  border-color: rgba(var(--accent-rgb), .28);
+}
+
+.chapter-icon  {
+  font-size:     30px;
+  margin-bottom: 12px;
+  display:       block;
+  line-height:   1;
+}
 .chapter-title {
-  font-family: var(--hd); font-size: 15px; font-weight: 700;
-  color: var(--text); margin-bottom: 4px; letter-spacing: 0.03em;
+  font-family:    var(--hd);
+  font-size:      15px;
+  font-weight:    700;
+  color:          var(--text);
+  margin-bottom:  4px;
+  letter-spacing: 0.03em;
 }
-.chapter-loc   {
-  font-family: var(--mono); font-size: 9px;
-  letter-spacing: 0.12em; margin-bottom: 14px; opacity: .85;
+.chapter-loc {
+  font-family:    var(--mono);
+  font-size:      9px;
+  letter-spacing: 0.12em;
+  margin-bottom:  14px;
+  opacity:        .85;
+  margin:         0 0 14px;
 }
 .chapter-story {
-  font-family: var(--body); font-size: 0.9375rem;
-  line-height: 1.75; color: rgba(var(--text-rgb),.55);
-  letter-spacing: 0; font-weight: 400;
+  font-family:    var(--body);
+  font-size:      0.9375rem;
+  line-height:    1.75;
+  color:          rgba(var(--text-rgb), .55);
+  letter-spacing: 0;
+  font-weight:    400;
+  margin:         0;
 }
-.chapter-line  { height: 2px; margin-top: 16px; border-radius: 1px; opacity: .4; }
+.chapter-line {
+  height:        2px;
+  margin-top:    16px;
+  border-radius: 1px;
+  opacity:       .4;
+}
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */
 @media (max-width: 860px) {
-  .travel-page    { padding: 60px var(--pad-x); }
-  .travel-hero    { grid-template-columns: 1fr; gap: 28px; }
-  .ss-img         { height: 240px; }
-  .chapters-grid  { grid-template-columns: 1fr; }
-  .chapter-card:hover { transform: none; }
+  .travel-page  { padding: 60px var(--pad-x); }
+  .travel-hero  { grid-template-columns: 1fr; gap: 28px; }
+  .chapters-grid { grid-template-columns: 1fr; }
+  .chapter-card:hover { transform: none; } /* no hover lift on touch */
+
+  /* Switch location tags to rounded pills on mobile —
+     clip-path cut corners look jagged at small sizes */
+  .travel-loc-tag {
+    clip-path:     none;
+    border-radius: 20px;
+    padding:       6px 14px;
+    font-size:     10px;
+  }
 }
+
 @media (max-width: 420px) {
-  .ss-img { height: 200px; }
+  .travel-main-title { font-size: 26px; }
+}
+
+/* ── LOCATION TAG AUTO-GLOW (touch devices) ─────────────────
+   On desktop, tags respond to hover.
+   On mobile, no hover exists — so we cycle a golden glow
+   through each tag automatically with staggered delay.
+   Each tag takes 3.6s total, offset so they ripple in sequence.
+   ─────────────────────────────────────────────────────────── */
+@keyframes tagPulse {
+  0%, 60%, 100% {
+    background:  rgba(var(--accent2-rgb), .07);
+    border-color: rgba(var(--accent2-rgb), .18);
+    color:        var(--accent2);
+    box-shadow:   none;
+  }
+  30% {
+    background:  rgba(var(--accent2-rgb), .22);
+    border-color: rgba(var(--accent2-rgb), .65);
+    color:        var(--accent2);
+    box-shadow:   0 0 14px rgba(var(--accent2-rgb), .35);
+  }
+}
+
+@media (hover: none) {
+  .travel-loc-tag {
+    animation: tagPulse 3.6s ease-in-out infinite;
+  }
+  /* Stagger each tag so they light up one at a time */
+  .travel-loc-tag:nth-child(1) { animation-delay: 0s;    }
+  .travel-loc-tag:nth-child(2) { animation-delay: 0.6s;  }
+  .travel-loc-tag:nth-child(3) { animation-delay: 1.2s;  }
+  .travel-loc-tag:nth-child(4) { animation-delay: 1.8s;  }
+  .travel-loc-tag:nth-child(5) { animation-delay: 2.4s;  }
+  .travel-loc-tag:nth-child(6) { animation-delay: 3.0s;  }
+
+  /* Pause animation when user prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .travel-loc-tag { animation: none; }
+  }
 }

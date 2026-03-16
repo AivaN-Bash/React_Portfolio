@@ -7,23 +7,28 @@
     <meta name="description" content="Phawat Tanajiranon — Backend Developer based in Bangkok, Thailand. Node.js, Python, PostgreSQL." />
     <meta name="author" content="Phawat Tanajiranon" />
 
+    <!-- Favicon -->
+    <link rel="icon"             href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png.svg" />
+    <link rel="manifest"         href="%PUBLIC_URL%/manifest.json" />
+
     <!-- Open Graph -->
     <meta property="og:title"       content="Beam — Backend Developer" />
     <meta property="og:description" content="Bangkok-based backend dev. Node.js, Python, PostgreSQL and more." />
     <meta property="og:type"        content="website" />
     <meta property="og:url"         content="https://AivaN-Bash.github.io/React_Portfolio" />
 
-    <!-- Twitter / X card -->
+    <!-- Twitter / X -->
     <meta name="twitter:card"        content="summary" />
     <meta name="twitter:title"       content="Beam — Backend Developer" />
     <meta name="twitter:description" content="Bangkok-based backend dev. Node.js, Python, PostgreSQL." />
 
-    <!-- Performance: open font connection before CSS requests it -->
+    <!-- Performance: open connection before CSS requests fonts -->
     <link rel="preconnect"   href="https://fonts.googleapis.com" />
     <link rel="preconnect"   href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
-    <!-- Fonts with font-display=swap to prevent invisible text flash -->
+    <!-- Fonts — display=swap prevents invisible text flash (FOIT) -->
     <link
       href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap"
       rel="stylesheet"
@@ -31,15 +36,13 @@
 
     <title>Beam · Portfolio</title>
 
-    <!-- GitHub Pages SPA redirect handler -->
+    <!-- GitHub Pages SPA redirect: restores path after 404.html redirect -->
     <script>
       (function() {
-        var search = window.location.search;
-        if (!search) return;
-        var p = new URLSearchParams(search).get('p');
+        var p = new URLSearchParams(window.location.search).get('p');
         if (p) {
           var base = window.location.pathname.split('?')[0];
-          history.replaceState(null, null, base + (p ? '/' + p : '') + window.location.hash);
+          history.replaceState(null, null, base + '/' + p + window.location.hash);
         }
       })();
     </script>
