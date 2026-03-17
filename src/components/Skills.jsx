@@ -5,7 +5,7 @@ import useScrollReveal from "../hooks/useScrollReveal";
 
 const TAG_CLASS = { Expert: "b-ex", Advanced: "b-ad", Intermediate: "b-in" };
 
-export default function Skills() {
+export default function Skills({ t = (k) => k, lang }) {
   const [tab,  setTab]  = useState("backend");
   const [anim, setAnim] = useState(false);
   // tabKey forces a remount of the grid when tab changes,
@@ -32,13 +32,13 @@ export default function Skills() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// SKILLS</div>
+      <div className="sec-tag">{t("sec_skills_tag")}</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">01</div>
         <div>
-          <span className="sec-ey">what I actually know</span>
-          <h2 className="sec-title">Skills &amp; <span className="dim">Tools</span></h2>
+          <span className="sec-ey">{t("sec_skills_ey")}</span>
+          <h2 className="sec-title">{t("sec_skills_title")} <span className="dim">{t("sec_skills_dim")}</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>

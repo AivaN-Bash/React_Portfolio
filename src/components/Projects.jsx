@@ -9,7 +9,7 @@ const STATUS_CLASS = {
   "Completed":   "ps-done",
 };
 
-export default function Projects() {
+export default function Projects({ t = (k) => k, lang }) {
   const headerRef = useScrollReveal({ delay: 0   });
   const gridReveal = useScrollReveal({ delay: 120 });
 
@@ -28,13 +28,13 @@ export default function Projects() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// PROJECTS</div>
+      <div className="sec-tag">{t("sec_proj_tag")}</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">04</div>
         <div>
-          <span className="sec-ey">things I've built</span>
-          <h2 className="sec-title">My <span className="dim">Projects</span></h2>
+          <span className="sec-ey">{t("sec_proj_ey")}</span>
+          <h2 className="sec-title">{t("sec_proj_title")} <span className="dim">{t("sec_proj_dim")}</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function Projects() {
                   rel="noopener noreferrer"
                   aria-label={`${p.title} source code on GitHub`}
                 >
-                  ⌥ GitHub
+                  ⌥ {t("proj_github")}
                 </a>
               )}
               {p.live && (
@@ -88,7 +88,7 @@ export default function Projects() {
                   rel="noopener noreferrer"
                   aria-label={`${p.title} live demo`}
                 >
-                  ▶ Live Demo
+                  ▶ {t("proj_live")}
                 </a>
               )}
             </div>

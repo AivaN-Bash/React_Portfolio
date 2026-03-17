@@ -37,7 +37,7 @@ const LIMITS = { name: 80, email: 120, subject: 120, message: 1000 };
 // ── Initial state ─────────────────────────────────────────────
 const EMPTY = { name: "", email: "", subject: "", message: "" };
 
-export default function Contact() {
+export default function Contact({ t = (k) => k, lang }) {
   const [form,   setForm]   = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
@@ -58,10 +58,10 @@ export default function Contact() {
   // Validate all fields — returns error map
   const validate = (f) => {
     const e = {};
-    if (!f.name.trim())                e.name    = "Name is required";
-    if (!f.email.trim())               e.email   = "Email is required";
-    else if (!EMAIL_RE.test(f.email))  e.email   = "Enter a valid email";
-    if (!f.message.trim())             e.message = "Message is required";
+    if (!f.name.trim())                e.name    = t("err_name");
+    if (!f.email.trim())               e.email   = t("err_email_req");
+    else if (!EMAIL_RE.test(f.email))  e.email   = t("err_email_inv");
+    if (!f.message.trim())             e.message = t("err_message");
     return e;
   };
 
@@ -116,25 +116,25 @@ export default function Contact() {
   const links = [
     {
       icon:  "✉",
-      label: "Email",
+      label: t("contact_label_email"),
       val:   ME.email,
       href:  safeHref(`mailto:${ME.email}`),
     },
     {
       icon:  "⌥",
-      label: "GitHub",
+      label: t("contact_label_github"),
       val:   ME.github.replace("https://", ""),
       href:  safeHref(ME.github),
     },
     {
       icon:  "in",
-      label: "LinkedIn",
+      label: t("contact_label_linkedin"),
       val:   ME.linkedin.replace("https://", ""),
       href:  safeHref(ME.linkedin),
     },
     {
       icon:  "◎",
-      label: "Location",
+      label: t("contact_label_location"),
       val:   ME.location,
       href:  null,
     },
@@ -142,13 +142,13 @@ export default function Contact() {
 
   return (
     <section className="sec">
-      <div className="sec-tag">// CONTACT</div>
+      <div className="sec-tag">{t("sec_contact_tag")}</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">03</div>
         <div>
-          <span className="sec-ey">let's talk</span>
-          <h2 className="sec-title">Say <span className="dim">Hello</span></h2>
+          <span className="sec-ey">{t("sec_contact_ey")}</span>
+          <h2 className="sec-title">{t("sec_contact_title")} <span className="dim">{t("sec_contact_dim")}</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>
@@ -158,10 +158,9 @@ export default function Contact() {
         {/* ── Left — links ── */}
         <div ref={leftRef}>
           <p className="contact-lore">
-            I'm currently open to full-time backend roles, freelance work,
-            and interesting side projects.<br/><br/>
-            If you have something in mind — or just want to talk code —
-            feel free to reach out. I usually reply the same day.
+            {t("contact_lore").split("\n\n").map((para, i) => (
+              <span key={i}>{para}{i === 0 && <><br/><br/></>}</span>
+            ))}
           </p>
 
           <nav className="contact-links" aria-label="Contact links">
@@ -198,18 +197,18 @@ export default function Contact() {
             {status === "sent" ? (
               <div className="f-ok" role="alert" aria-live="polite">
                 <span className="f-ok-g" aria-hidden="true">🌙</span>
-                <p className="f-ok-t">Got it, thanks!</p>
+                <p className="f-ok-t">{t("form_ok_title")}</p>
                 <p className="f-ok-s">
-                  I'll get back to you soon, {sanitize(form.name)}.
+                  {t("form_ok_sub")}, {sanitize(form.name)}.
                 </p>
               </div>
             ) : (
               <>
-                <h3 className="form-hd">Drop me a message</h3>
+                <h3 className="form-hd">{t("form_hd")}</h3>
 
                 {status === "error" && (
                   <div className="f-error" role="alert">
-                    Something went wrong — please email me directly.
+                    {t("form_error")}
                   </div>
                 )}
 
@@ -263,7 +262,7 @@ export default function Contact() {
                       {errors.message}
                     </span>
                   )}
-                  <span className="f-hint">Ctrl + Enter to send</span>
+                  <span className="f-hint">{t("form_hint")}</span>
                 </div>
 
                 <button
@@ -273,7 +272,7 @@ export default function Contact() {
                   disabled={status === "sending"}
                   aria-busy={status === "sending"}
                 >
-                  {status === "sending" ? "Sending…" : "Send Message"}
+                  {status === "sending" ? t("form_sending") : t("form_send")}
                 </button>
               </>
             )}

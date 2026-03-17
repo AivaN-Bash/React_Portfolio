@@ -3,7 +3,7 @@ import EXP from "../data/experience";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 // ── Each card is its own component so the hook call is valid ──
-function ExpCard({ exp, index, setPage }) {
+function ExpCard({ exp, index, setPage, t }) {
   const ref = useScrollReveal({ delay: index * 80 });
   return (
     <div ref={ref} className={`exp-card${exp.special ? " special" : ""}`}>
@@ -18,25 +18,25 @@ function ExpCard({ exp, index, setPage }) {
       </div>
       {exp.special && (
         <button className="exp-story-btn" onClick={() => setPage("travel")}>
-          ✈ Read Full Story →
+          {t("exp_story_btn")}
         </button>
       )}
     </div>
   );
 }
 
-export default function Experience({ setPage }) {
+export default function Experience({ setPage, t = (k) => k, lang }) {
   const headerRef = useScrollReveal({ delay: 0 });
 
   return (
     <section className="sec">
-      <div className="sec-tag">// EXPERIENCE</div>
+      <div className="sec-tag">{t("sec_exp_tag")}</div>
 
       <div className="sec-hd" ref={headerRef}>
         <div className="sec-n">02</div>
         <div>
-          <span className="sec-ey">where I've been</span>
-          <h2 className="sec-title">Work <span className="dim">History</span></h2>
+          <span className="sec-ey">{t("sec_exp_ey")}</span>
+          <h2 className="sec-title">{t("sec_exp_title")} <span className="dim">{t("sec_exp_dim")}</span></h2>
           <div className="sec-rule"/>
         </div>
       </div>
@@ -44,7 +44,7 @@ export default function Experience({ setPage }) {
       <div className="exp-list">
         {EXP.map((exp, i) => (
           <div key={`${exp.company}-${exp.period}`}>
-            <ExpCard exp={exp} index={i} setPage={setPage}/>
+            <ExpCard exp={exp} index={i} setPage={setPage} t={t}/>
             {i < EXP.length - 1 && <div className="exp-conn"/>}
           </div>
         ))}

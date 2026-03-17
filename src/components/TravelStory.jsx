@@ -4,7 +4,7 @@ import TRAVEL         from "../data/travel";
 import Slideshow      from "./Slideshow";
 import useScrollReveal from "../hooks/useScrollReveal";
 
-export default function TravelStory() {
+export default function TravelStory({ t = (k) => k, lang }) {
   const heroRef    = useScrollReveal({ delay: 0   });
   const chapRef    = useScrollReveal({ delay: 100 });
   const chapGridEl = useRef();

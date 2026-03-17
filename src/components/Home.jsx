@@ -60,7 +60,7 @@ const GlitchName = memo(({ text }) => (
 GlitchName.displayName = "GlitchName";
 
 // ── Component ────────────────────────────────────────────────
-export default function Home({ setPage }) {
+export default function Home({ setPage, t, lang }) {
   const typedRole = useTyping(ROLES);
   const { cardRef, glowRef } = useTilt(11);
   const ripple = useRipple();
@@ -79,7 +79,7 @@ export default function Home({ setPage }) {
       <div className="hero-content">
 
         <p className="h-over" aria-label="Location and status">
-          Bangkok, Thailand · Open to Work
+          {t("over_location")} · {t("over_status")}
         </p>
 
         <h1 className="hero-name">
@@ -119,10 +119,10 @@ export default function Home({ setPage }) {
         {/* CTA buttons */}
         <div className="hero-btns">
           <button {...ripple} className="btn-p ripple-origin" onClick={() => setPage("contact")}>
-            <span>✉ Contact Me</span>
+            <span>✉ {t("hero_cta_contact")}</span>
           </button>
           <button {...ripple} className="btn-s ripple-origin" onClick={() => setPage("projects")}>
-            ▶ View Projects
+            ▶ {t("hero_cta_projects")}
           </button>
           <a
             className="btn-cv"
@@ -130,13 +130,13 @@ export default function Home({ setPage }) {
             download="Beam-CV.pdf"
             aria-label="Download CV as PDF"
           >
-            ↓ Download CV
+            ↓ {t("hero_cta_cv")}
           </a>
         </div>
 
         {/* Tech stack */}
         <div className="stack-row">
-          <span className="stack-label" aria-hidden="true">STACK</span>
+          <span className="stack-label" aria-hidden="true">{t("hero_stack_label")}</span>
           <ul className="stack-pills" aria-label="Tech stack">
             {STACK.map(s => (
               <li

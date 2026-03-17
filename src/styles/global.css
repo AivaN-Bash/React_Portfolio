@@ -22,7 +22,10 @@
    ============================================================ */
 
 /* ── 1. FONTS ───────────────────────────────────────────────── */
+/* Latin fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+/* Thai font — loaded separately so Latin pages don't pay the cost */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&display=swap');
 
 /* ── 2. RESET ───────────────────────────────────────────────── */
 *,
@@ -154,6 +157,7 @@ body.scroll-locked { overflow: hidden; }
   --hd:      'Cinzel', serif;
   --body:    'Inter', system-ui, -apple-system, sans-serif;
   --mono:    'Share Tech Mono', monospace;
+  --thai:    'Noto Sans Thai', 'Sarabun', system-ui, sans-serif;
 
   --space-xs:  4px;
   --space-sm:  8px;
@@ -212,6 +216,39 @@ p {
 ::-webkit-scrollbar       { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* ── THAI LANGUAGE OVERRIDES ─────────────────────────────────
+   When <html lang="th"> is set by useLang:
+   - Switch to Noto Sans Thai for ALL text
+   - Reset letter-spacing (Thai ignores it but causes gaps)
+   - Never uppercase Thai characters
+   ─────────────────────────────────────────────────────────── */
+:lang(th) body,
+:lang(th) p,
+:lang(th) h1,
+:lang(th) h2,
+:lang(th) h3,
+:lang(th) h4 {
+  font-family: var(--thai);
+  letter-spacing: 0;
+}
+:lang(th) .drawer-label {
+  font-family:     var(--thai);
+  font-size:       clamp(22px, 6vw, 34px);
+  letter-spacing:  0;
+  text-transform:  none;
+  font-weight:     700;
+  line-height:     1.4;
+}
+:lang(th) .nl,
+:lang(th) .drawer-link,
+:lang(th) .nav-lang {
+  font-family:    var(--thai);
+  letter-spacing: 0;
+  text-transform: none;
+  font-size:      12px;
+}
+
 
 /* ── 6. ANIMATIONS ──────────────────────────────────────────── */
 @keyframes fadeUp  { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0);   } }
@@ -634,6 +671,8 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
   will-change: opacity, transform;
 }
 .stt-btn.stt-visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+/* Hide scroll-to-top when mobile drawer is open — prevents blocking theme dots */
+body.scroll-locked .stt-btn { opacity: 0 !important; pointer-events: none !important; }
 .stt-btn:hover       { border-color: var(--accent); box-shadow: 0 0 18px rgba(var(--accent-rgb),.22); }
 
 /* ── 13. PERFORMANCE ────────────────────────────────────────── */

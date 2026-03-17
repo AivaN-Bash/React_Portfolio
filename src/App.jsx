@@ -1,4 +1,4 @@
-import { lazy, Suspense, memo, useMemo } from "react";
+import { lazy, Suspense, memo, useMemo, useEffect } from "react";
 import "./styles/global.css";
 
 import Cursor        from "./components/Cursor";
@@ -8,6 +8,7 @@ import ScrollToTop   from "./components/ScrollToTop";
 import ME            from "./data/me";
 import useRouter     from "./hooks/useRouter";
 import useTheme      from "./hooks/useTheme";
+import useLang       from "./hooks/useLang";
 
 // ── Lazy pages — code-split per route ────────────────────────
 const Home        = lazy(() => import("./components/Home"));
@@ -20,15 +21,17 @@ const Contact     = lazy(() => import("./components/Contact"));
 // ── Static values — defined outside component so never recreated ──
 const CURRENT_YEAR = new Date().getFullYear();
 
-// Page factory map — avoids switch/case and useMemo dependency array
-const PAGES = {
-  home:     (nav) => <Home     setPage={nav}/>,
-  skills:   ()    => <Skills/>,
-  projects: ()    => <Projects/>,
-  exp:      (nav) => <Experience setPage={nav}/>,
-  travel:   ()    => <TravelStory/>,
-  contact:  ()    => <Contact/>,
-};
+// Page factory map — receives navigate + t so all pages can translate
+// t is stable (memoised in useLang), so this map is recreated only
+// when navigate or t changes (which only happens on lang change)
+const makePages = (nav, t, lang) => ({
+  home:     () => <Home     setPage={nav} t={t} lang={lang}/>,
+  skills:   () => <Skills   t={t} lang={lang}/>,
+  projects: () => <Projects t={t} lang={lang}/>,
+  exp:      () => <Experience setPage={nav} t={t} lang={lang}/>,
+  travel:   () => <TravelStory t={t} lang={lang}/>,
+  contact:  () => <Contact  t={t} lang={lang}/>,
+});
 
 // ── Background — memoised, never re-renders ──────────────────
 // Three individual fixed-position SVGs. Cannot use a single SVG
@@ -80,12 +83,20 @@ const PageFallback = () => (
 export default function App() {
   const { page, navigate, transitioning } = useRouter();
   const { theme, setTheme }               = useTheme();
+  const { lang, setLang, t }              = useLang();
 
   // Only re-renders page content when page or navigate changes
-  const pageContent = useMemo(
-    () => (PAGES[page] ?? PAGES.home)(navigate),
-    [page, navigate]
-  );
+  // Re-translate page title when language changes
+  useEffect(() => {
+    const titleKey = `title_${page}`;
+    document.title = t(titleKey);
+  }, [lang, page, t]);
+
+  // Recreate page content when page, navigate, t, or lang changes
+  const pageContent = useMemo(() => {
+    const pages = makePages(navigate, t, lang);
+    return (pages[page] ?? pages.home)();
+  }, [page, navigate, t, lang]);
 
   return (
     <>
@@ -98,6 +109,9 @@ export default function App() {
         setPage={navigate}
         theme={theme}
         setTheme={setTheme}
+        lang={lang}
+        setLang={setLang}
+        t={t}
       />
 
       {/* CSS class drives transition — no inline style object on every render */}
@@ -113,8 +127,7 @@ export default function App() {
           {" · "}{ME.nickname.toUpperCase()}
         </p>
         <p className="ft">
-          ARCANA: <span>{ME.arcana}</span>
-          {" · "}PERSONA 3 INSPIRED
+          {t("footer_role").toUpperCase()} {" · "} {t("footer_arcana")}
         </p>
       </footer>
 
