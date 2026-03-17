@@ -650,6 +650,112 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
   .scan, .p-ring1, .p-ring2 { animation: none; }
 }
 
+
+/* ── P3R GHOST KANJI ─────────────────────────────────────────
+   Inspired by the large fragmented カ/ス/キ characters in P3R
+   battle screens. Extremely faint watermarks — purely decorative,
+   screen-reader hidden via aria-hidden on parent .bg-l.
+   Hidden on mobile to protect performance.
+   ──────────────────────────────────────────────────────────── */
+.bg-kanji {
+  position:       fixed;
+  top:  0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  overflow:       hidden;
+  z-index:        0;
+}
+/* Each kanji character — positioned absolutely */
+.bg-kanji::before {
+  content:        'ペルソナ';
+  position:       absolute;
+  top:  6%;  right: 4%;
+  font-family:    var(--mono);
+  font-size:      clamp(64px, 9vw, 110px);
+  font-weight:    700;
+  letter-spacing: 0.05em;
+  color:          var(--accent);
+  opacity:        .022;
+  writing-mode:   vertical-rl;
+  line-height:    1;
+  user-select:    none;
+  /* Subtle drift animation — very slow */
+  animation:      p3Depth 18s ease-in-out infinite;
+}
+.bg-kanji::after {
+  content:        '時間';
+  position:       absolute;
+  bottom: 8%; left: 3%;
+  font-family:    var(--mono);
+  font-size:      clamp(48px, 7vw, 88px);
+  font-weight:    700;
+  color:          var(--accent2);
+  opacity:        .018;
+  writing-mode:   vertical-rl;
+  line-height:    1;
+  user-select:    none;
+  animation:      p3Depth 22s 4s ease-in-out infinite;
+}
+/* Hide on mobile — saves paint + GPU */
+@media (max-width: 860px) {
+  .bg-kanji { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-kanji::before,
+  .bg-kanji::after { animation: none; }
+}
+
+/* ── P3R BAR INDICATOR ───────────────────────────────────────
+   The thin vertical bars at the top of P3R battle/menu screens.
+   Very subtle — only visible on dark themes.
+   ──────────────────────────────────────────────────────────── */
+.bg-bars {
+  position:       fixed;
+  top:            0; left: 0; right: 0;
+  height:         3px;
+  pointer-events: none;
+  z-index:        999;
+  /* Below the nav (z-index 1000) */
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(var(--accent-rgb), .35) 0px,
+    rgba(var(--accent-rgb), .35) 2px,
+    transparent                  2px,
+    transparent                  18px
+  );
+  opacity: .4;
+  animation: p3Flicker 8s 3s infinite;
+}
+[data-theme="dawn"] .bg-bars { display: none; }
+@media (max-width: 860px) { .bg-bars { display: none; } }
+@media (prefers-reduced-motion: reduce) { .bg-bars { animation: none; } }
+
+/* ── P3R NAME BADGE ──────────────────────────────────────────
+   Inspired by the character name pill in P3R battle/dialogue
+   (アギ in image 1, Junpei Iori in image 2).
+   Applied to .h-over on the hero section.
+   ──────────────────────────────────────────────────────────── */
+.p3-badge {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            8px;
+  padding:        3px 12px 3px 10px;
+  background:     rgba(var(--accent-rgb), .1);
+  border:         1px solid rgba(var(--accent-rgb), .3);
+  border-left:    3px solid var(--accent);
+  /* Slightly angled right corner like P3R dialogue badges */
+  clip-path:      polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  font-family:    var(--mono);
+  font-size:      9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color:          var(--accent);
+}
+.p3-badge::before {
+  content:    '◎';
+  font-size:  8px;
+  opacity:    .7;
+  flex-shrink: 0;
+}
 /* ── 14. RESPONSIVE ─────────────────────────────────────────── */
 @media (hover: none) {
   #p3c, #p3d  { display: none; }

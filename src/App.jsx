@@ -54,11 +54,17 @@ const Background = memo(() => (
       <polygon points="20,2 38,36 2,36" stroke="var(--purple)"  strokeWidth="1.5" fill="none"/>
     </svg>
 
-    {/* P3R floating fragments — inspired by blue flame particles in P3R key art */}
+    {/* P3R floating fragments — blue flame particle art */}
     <div className="bg-fragments" aria-hidden="true">
       <span/><span/><span/><span/>
       <span/><span/><span/><span/>
     </div>
+
+    {/* Ghost kanji watermarks — P3R battle screen atmosphere */}
+    <div className="bg-kanji" aria-hidden="true"/>
+
+    {/* Bar indicator — P3R UI edge detail */}
+    <div className="bg-bars" aria-hidden="true"/>
   </div>
 ));
 Background.displayName = "Background";
