@@ -119,9 +119,10 @@
 .sk-pct {
   font-family: var(--mono);
   font-size:   9px;
-  color:       rgba(var(--accent-rgb), .5);
-  margin-top:  5px;
+  color:       rgba(var(--accent-rgb), .65);
+  margin-top:  6px;
   text-align:  right;
+  letter-spacing: 0.06em;
 }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */

@@ -40,6 +40,9 @@
 .hero-name .gold {
   color: var(--accent2);
   text-shadow: var(--glow-gold);
+  /* P3R name treatment: slightly italic for kinetic energy */
+  display: inline-block;
+  transform: skewX(-1deg);
 }
 
 /* Nickname */
@@ -86,13 +89,15 @@
 .sb-row  { display: flex; align-items: center; gap: 12px; }
 .sb-lbl  {
   font-family: var(--mono); font-size: 9px;
-  color: var(--accent2); letter-spacing: 0.12em;
+  letter-spacing: 0.12em;
   width: 28px; flex-shrink: 0;
 }
+.sb-lbl.hp { color: var(--accent); }
+.sb-lbl.sp { color: var(--accent2); }
 .sb-track { flex: 1; height: 3px; background: rgba(var(--text-rgb), .06); overflow: hidden; }
 .sb-fill  { height: 100%; }
-.sb-hp  { background: linear-gradient(90deg, var(--accent), rgba(var(--accent-rgb),.5)); box-shadow: 0 0 6px rgba(var(--accent-rgb),.4); width: 87%; }
-.sb-sp  { background: linear-gradient(90deg, var(--purple), var(--accent)); box-shadow: 0 0 6px rgba(var(--accent-rgb),.3); width: 74%; }
+.sb-hp  { background: var(--accent); box-shadow: 0 0 8px rgba(var(--accent-rgb),.6); width: 87%; }
+.sb-sp  { background: var(--accent2); box-shadow: 0 0 8px rgba(var(--accent2-rgb),.6); width: 74%; }
 .sb-v   { font-family: var(--mono); font-size: 9px; color: var(--text-dim); }
 
 /* Buttons row */
@@ -137,11 +142,13 @@
   background: rgba(var(--accent-rgb), .08);
   clip-path: polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));
   transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  /* P3R: each pill slightly skewed — like menu items */
+  transform: skewX(-4deg);
 }
 .stack-pill:hover {
-  background: rgba(var(--accent-rgb), .18);
-  transform: translateY(-2px);
+  transform: skewX(-4deg) translateY(-2px);
 }
+
 
 /* ── PERSONA CARD ───────────────────────────────────────────── */
 .p-frame {
@@ -150,24 +157,33 @@
   animation: float 5s ease-in-out infinite;
 }
 .p-ring1 {
-  position: absolute; width: 380px; height: 380px; border-radius: 50%;
-  border: 1px solid rgba(var(--accent-rgb),.1);
-  animation: spin 30s linear infinite;
-  border-top-color: rgba(var(--accent-rgb),.45);
+  position: absolute; width: 360px; height: 360px; border-radius: 50%;
+  border: 1px solid rgba(var(--accent-rgb),.08);
+  animation: spin 32s linear infinite;
+  border-top-color: rgba(var(--accent-rgb),.5);
+  border-right-color: rgba(var(--accent-rgb),.15);
 }
 .p-ring2 {
-  position: absolute; width: 430px; height: 430px; border-radius: 50%;
-  border: 1px solid rgba(var(--accent2-rgb),.06);
-  animation: spinR 22s linear infinite;
-  border-right-color: rgba(var(--accent2-rgb),.3);
+  position: absolute; width: 420px; height: 420px; border-radius: 50%;
+  border: 1px solid rgba(var(--accent-rgb),.04);
+  animation: spinR 24s linear infinite;
+  border-right-color: rgba(var(--accent-rgb),.25);
 }
 .p-card {
   width: 300px; height: 410px;
   position: relative; overflow: hidden;
-  background: linear-gradient(155deg,rgba(var(--accent-rgb),.07),rgba(var(--accent-rgb),.03),rgba(var(--accent-rgb),.01));
-  border: 1px solid rgba(var(--accent-rgb),.26);
+  /* P3R card: dark base with top cyan strip */
+  background: linear-gradient(
+    180deg,
+    rgba(var(--accent-rgb), .12) 0%,
+    rgba(var(--accent-rgb), .04) 8%,
+    rgba(4, 18, 35, .95) 8%
+  );
+  border: 1px solid rgba(var(--accent-rgb),.35);
+  border-top: 2px solid rgba(var(--accent-rgb),.8);
   clip-path: polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));
   animation: fadeIn 0.65s cubic-bezier(0.16,1,0.3,1) .3s both;
+  box-shadow: 0 0 40px rgba(var(--accent-rgb),.08), inset 0 1px 0 rgba(var(--accent-rgb),.2);
 }
 .p-card-in {
   position: absolute; inset: 5px;
@@ -177,11 +193,12 @@
   justify-content: center; gap: 12px; padding: 28px 20px;
 }
 .p-arcana {
-  font-family: var(--hd); font-size: 9px; font-weight: 600;
+  font-family: var(--hd); font-size: 9px; font-weight: 700;
   color: var(--accent2); letter-spacing: 0.35em; text-transform: uppercase;
-  border-top: 1px solid rgba(var(--accent2-rgb),.25);
-  border-bottom: 1px solid rgba(var(--accent2-rgb),.25);
+  border-top: 1px solid rgba(var(--accent2-rgb),.3);
+  border-bottom: 1px solid rgba(var(--accent2-rgb),.3);
   padding: 4px 18px; margin-bottom: 4px;
+  text-shadow: 0 0 10px rgba(var(--accent2-rgb),.4);
 }
 .p-symbol { font-size: 60px; line-height: 1; animation: moonGlow 3s ease-in-out infinite; }
 .p-cname  {
@@ -219,9 +236,9 @@
 /* ── GLITCH ─────────────────────────────────────────────────── */
 @keyframes glitch-1 {
   0%,92%,100% { clip-path: inset(0 0 100% 0); transform: translate(0); }
-  93% { clip-path: inset(8%  0 85% 0); transform: translate(-4px, 1px);  color: var(--pink); }
-  94% { clip-path: inset(55% 0 30% 0); transform: translate( 4px,-1px);  color: var(--accent); }
-  95% { clip-path: inset(20% 0 70% 0); transform: translate(-3px, 2px);  color: var(--pink); }
+  93% { clip-path: inset(8%  0 85% 0); transform: translate(-3px, 1px);  color: var(--accent2); }
+  94% { clip-path: inset(55% 0 30% 0); transform: translate( 3px,-1px);  color: var(--accent); }
+  95% { clip-path: inset(20% 0 70% 0); transform: translate(-2px, 1px);  color: var(--accent2); }
   96% { clip-path: inset(75% 0 10% 0); transform: translate( 3px,-2px);  color: var(--accent); }
   97% { clip-path: inset(40% 0 45% 0); transform: translate(-2px, 1px);  color: var(--pink); }
   98%,99% { clip-path: inset(0 0 100% 0); transform: translate(0); }

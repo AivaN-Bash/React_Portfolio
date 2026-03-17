@@ -20,7 +20,7 @@
   background: linear-gradient(135deg,rgba(var(--accent-rgb),.04),transparent);
   opacity: 0; transition: opacity 0.3s;
 }
-.proj-card:hover { transform: translateY(-4px); }
+.proj-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(var(--accent-rgb),.1); }
 .proj-card:hover::before { opacity: 1; }
 
 /* Corners */

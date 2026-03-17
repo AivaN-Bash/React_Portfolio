@@ -105,12 +105,12 @@ export default function Home({ setPage }) {
         {/* P3-style status bars — decorative */}
         <div className="sb-wrap" aria-hidden="true">
           <div className="sb-row">
-            <span className="sb-lbl">EXP</span>
+            <span className="sb-lbl hp">EXP</span>
             <div className="sb-track"><div className="sb-fill sb-hp"/></div>
             <span className="sb-v">87/100</span>
           </div>
           <div className="sb-row">
-            <span className="sb-lbl">SKL</span>
+            <span className="sb-lbl sp">SKL</span>
             <div className="sb-track"><div className="sb-fill sb-sp"/></div>
             <span className="sb-v">74/100</span>
           </div>

@@ -57,27 +57,30 @@ body.scroll-locked { overflow: hidden; }
     --glow-gold    Secondary drop-shadow glow
 */
 
-/* MIDNIGHT — Deep navy + cyan (default Persona 3 theme) */
+/* MIDNIGHT — P3R Deep Navy + Electric Cyan + SEES Red
+   Palette extracted directly from Persona 3 Reload art direction:
+   Near-black navy bg, electric #00c8ff cyan, SEES armband red */
 :root,
 [data-theme="midnight"] {
-  --bg:          #01060f;
-  --bg2:         #050d1f;
-  --bg2-rgb:     5, 13, 31;
+  --bg:          #020b18;
+  --bg2:         #041223;
+  --bg2-rgb:     4, 18, 35;
   --accent:      #00c8ff;
   --accent-rgb:  0, 200, 255;
   --accent2:     #ffd700;
   --accent2-rgb: 255, 215, 0;
-  --purple:      #7b61ff;
-  --purple-rgb:  123, 97, 255;
-  --pink:        #ff6b9d;
+  --purple:      #0050a0;
+  --purple-rgb:  0, 80, 160;
+  --pink:        #e8003c;
   --green:       #00e87a;
-  --text:        #e8f4ff;
-  --text-rgb:    232, 244, 255;
-  --text-muted:  #5a7a9a;
-  --text-muted-rgb: 90, 122, 154;
-  --text-dim:    #2a4a6a;
-  --glow:        0 0 24px rgba(0,200,255,.5), 0 0 80px rgba(0,200,255,.12);
-  --glow-gold:   0 0 20px rgba(255,215,0,.5), 0 0 60px rgba(255,215,0,.1);
+  --sees-red:    #e8003c;
+  --text:        #dff3ff;
+  --text-rgb:    223, 243, 255;
+  --text-muted:  #4a7a9a;
+  --text-muted-rgb: 74, 122, 154;
+  --text-dim:    #1a3a5a;
+  --glow:        0 0 24px rgba(0,200,255,.55), 0 0 80px rgba(0,200,255,.15);
+  --glow-gold:   0 0 20px rgba(255,215,0,.5),   0 0 60px rgba(255,215,0,.1);
 }
 
 /* VIOLET — Deep purple + lavender (dreamlike) */
@@ -228,6 +231,34 @@ p {
 @keyframes ssIn        { from { opacity:0; transform:scale(1.03); } to { opacity:1; transform:scale(1); } }
 @keyframes ripple      { from { transform:translate(-50%,-50%) scale(0); opacity:.35; } to { transform:translate(-50%,-50%) scale(4); opacity:0; } }
 
+/* P3R signature animations */
+@keyframes p3Slash {
+  from { transform: translateX(-100%) rotate(-12deg); opacity: 0; }
+  to   { transform: translateX(0)     rotate(-12deg); opacity: 1; }
+}
+@keyframes p3Fragment {
+  0%   { transform: translate(0, 0)    rotate(0deg);   opacity: .6; }
+  100% { transform: translate(var(--fx, 40px), var(--fy, -60px)) rotate(var(--fr, 180deg)); opacity: 0; }
+}
+@keyframes p3Flicker {
+  0%,96%,100% { opacity: 1;  }
+  97%         { opacity: .4; }
+  98%         { opacity: 1;  }
+  99%         { opacity: .6; }
+}
+@keyframes p3StackIn {
+  from { opacity: 0; transform: translateX(16px) skewX(-4deg); }
+  to   { opacity: 1; transform: translateX(0)     skewX(0deg);  }
+}
+@keyframes p3Depth {
+  0%,100% { transform: translateY(0)   scaleX(1); }
+  50%     { transform: translateY(-6px) scaleX(1.01); }
+}
+@keyframes p3ScanLine {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(120vh); }
+}
+
 /* ── 7. BACKGROUND ──────────────────────────────────────────── */
 .bg-l {
   position: fixed; inset: 0; z-index: 0;
@@ -235,46 +266,148 @@ p {
 }
 .bg-g {
   position: absolute; inset: 0;
+  /* P3R depth gradient — deep navy at bottom, slight cyan breath at top */
   background:
-    radial-gradient(ellipse 80% 60% at 15% 0%,  rgba(var(--accent-rgb), .08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 85% 100%, rgba(var(--accent-rgb), .05) 0%, transparent 60%);
-  transition: background 0.4s ease;
+    radial-gradient(ellipse 90% 55% at 20% 0%,   rgba(var(--accent-rgb), .07) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 85% 100%,  rgba(0, 40, 80, .6) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 50% at 50% 100%, rgba(0, 16, 40, .8) 0%, transparent 60%);
+  transition: background 0.5s ease;
 }
-/* Fallback base color handled by body background */
+
+/* P3R diagonal slash — the signature visual from all P3R art */
+.bg-slash {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* Primary diagonal slash — thin cyan line */
+.bg-slash::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 200%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), .12) 20%,
+    rgba(var(--accent-rgb), .08) 80%,
+    transparent 100%
+  );
+  top: -50%; left: 16%;
+  transform: rotate(-12deg);
+}
+/* Secondary echo line */
+.bg-slash::after {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 200%;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--accent-rgb), .05) 30%,
+    transparent 100%
+  );
+  top: -50%; left: 20%;
+  transform: rotate(-12deg);
+}
+
+/* Grid — fine, very subtle */
 .bg-grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(var(--accent-rgb), .03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--accent-rgb), .03) 1px, transparent 1px);
-  background-size: 52px 52px;
+    linear-gradient(rgba(var(--accent-rgb), .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), .025) 1px, transparent 1px);
+  background-size: 48px 48px;
 }
+
+/* Dot field */
 .bg-dots {
   position: absolute; inset: 0;
-  background-image: radial-gradient(rgba(var(--accent-rgb), .08) 1px, transparent 1px);
-  background-size:  26px 26px;
-  opacity: .3;
+  background-image: radial-gradient(rgba(var(--accent-rgb), .07) 1px, transparent 1px);
+  background-size:  28px 28px;
+  opacity: .25;
 }
+
+/* P3R scan line — thinner, faster */
 .scan {
-  position: absolute; left: 0; right: 0; height: 180px;
-  background: linear-gradient(transparent, rgba(var(--accent-rgb), .015), transparent);
-  animation: scanH 16s linear infinite;
+  position: absolute; left: 0; right: 0; height: 120px;
+  background: linear-gradient(transparent, rgba(var(--accent-rgb), .018), transparent);
+  animation: scanH 12s linear infinite;
   will-change: transform;
 }
+
+/* Tartarus clock rings */
 .clock-ring {
-  position: absolute; width: 760px; height: 760px; border-radius: 50%;
+  position: absolute; width: 720px; height: 720px; border-radius: 50%;
   top: 50%; left: 50%; transform: translate(-50%,-50%);
-  border: 1px solid rgba(var(--accent-rgb), .05);
+  border: 1px solid rgba(var(--accent-rgb), .06);
+  animation: spinR 40s linear infinite;
 }
 .clock-ring2 {
-  position: absolute; width: 560px; height: 560px; border-radius: 50%;
+  position: absolute; width: 520px; height: 520px; border-radius: 50%;
   top: 50%; left: 50%; transform: translate(-50%,-50%);
-  border: 1px solid rgba(var(--accent-rgb), .035);
+  border: 1px solid rgba(var(--accent-rgb), .04);
+  animation: spin 55s linear infinite;
 }
-.bg-tri             { position: fixed; pointer-events: none; }
-.t1                 { top: 12%;    right: 6%;   opacity: .035; animation: float  8s       ease-in-out infinite; }
-.t2                 { bottom: 18%; left: 4%;    opacity: .04;  animation: float 10s 1s   ease-in-out infinite; }
-.t3                 { top: 58%;    right: 14%;  opacity: .05;  animation: float  7s 2s   ease-in-out infinite; }
+/* Tick marks on rings */
+.clock-ring::before {
+  content: '';
+  position: absolute; top: -2px; left: 50%;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent); opacity: .4;
+  transform: translateX(-50%);
+}
 
+/* Triangles — P3R style sharp fragments */
+.bg-tri             { position: fixed; pointer-events: none; }
+.t1 { top: 12%;    right: 6%;   opacity: .04;  animation: float  9s       ease-in-out infinite; }
+.t2 { bottom: 18%; left: 3%;    opacity: .05;  animation: float 11s 1.2s  ease-in-out infinite; }
+.t3 { top: 55%;    right: 12%;  opacity: .055; animation: float  7s 2.4s  ease-in-out infinite; }
+
+
+/* ── P3R FLOATING FRAGMENTS ─────────────────────────────────────
+   Inspired by the blue flame particle art in P3R key art (image 2).
+   Small CSS-only diamond/shard shapes that float in the background.
+   Pure CSS — zero JS, zero performance impact.
+   ──────────────────────────────────────────────────────────────── */
+.bg-fragments {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: hidden;
+}
+.bg-fragments span {
+  position:   absolute;
+  display:    block;
+  background: var(--accent);
+  opacity:    0;
+  animation:  p3FragFloat linear infinite;
+}
+/* Each fragment: different size, position, delay, duration */
+.bg-fragments span:nth-child(1)  { width:3px;  height:3px;  left:10%;  animation-duration:14s; animation-delay:0s;    opacity:.0; }
+.bg-fragments span:nth-child(2)  { width:4px;  height:4px;  left:25%;  animation-duration:18s; animation-delay:2s;    opacity:.0; }
+.bg-fragments span:nth-child(3)  { width:2px;  height:6px;  left:40%;  animation-duration:12s; animation-delay:4s;    opacity:.0; }
+.bg-fragments span:nth-child(4)  { width:5px;  height:2px;  left:60%;  animation-duration:16s; animation-delay:1s;    opacity:.0; background: var(--accent2); }
+.bg-fragments span:nth-child(5)  { width:3px;  height:3px;  left:75%;  animation-duration:20s; animation-delay:6s;    opacity:.0; }
+.bg-fragments span:nth-child(6)  { width:2px;  height:4px;  left:85%;  animation-duration:11s; animation-delay:3s;    opacity:.0; }
+.bg-fragments span:nth-child(7)  { width:4px;  height:4px;  left:15%;  animation-duration:15s; animation-delay:7s;    opacity:.0; background: var(--accent2); }
+.bg-fragments span:nth-child(8)  { width:3px;  height:5px;  left:50%;  animation-duration:13s; animation-delay:5s;    opacity:.0; }
+
+@keyframes p3FragFloat {
+  0%   { transform: translateY(110vh) rotate(0deg);    opacity: 0;   }
+  5%   { opacity: .35; }
+  50%  { transform: translateY(50vh)  rotate(180deg);  opacity: .25; }
+  90%  { opacity: .15; }
+  100% { transform: translateY(-10vh) rotate(360deg);  opacity: 0;   }
+}
+
+/* Pause fragments on reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .bg-fragments span { animation: none; }
+}
+/* Hide on mobile — saves battery */
+@media (max-width: 860px) {
+  .bg-fragments { display: none; }
+}
 /* ── 8. PAGE / SECTION ──────────────────────────────────────── */
 .page {
   position:   relative;
@@ -300,13 +433,14 @@ p {
 .sec-tag {
   position: absolute; top: 28px; left: var(--pad-x);
   font-family: var(--mono); font-size: 9px;
-  color: rgba(var(--accent-rgb), .25); letter-spacing: 0.2em;
+  color: rgba(var(--accent-rgb), .3); letter-spacing: 0.22em;
   text-transform: uppercase;
   display: flex; align-items: center; gap: 8px;
 }
 .sec-tag::before {
-  content: ''; width: 14px; height: 1px;
-  background: rgba(var(--accent-rgb), .25);
+  content: ''; width: 16px; height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: .5;
 }
 .sec-hd {
   margin-bottom: var(--space-xl);
@@ -317,15 +451,20 @@ p {
   font-size:     clamp(56px, 8vw, 80px);
   font-weight:   900;
   line-height:   .85;
-  color:         rgba(var(--accent-rgb), .05);
+  color:         rgba(var(--accent-rgb), .055);
   letter-spacing:-4px;
   user-select:   none;
   flex-shrink:   0;
 }
 .sec-ey {
-  font-family:  var(--mono); font-size: 10px;
-  color:        var(--accent); letter-spacing: 0.18em;
-  text-transform: uppercase; margin-bottom: 8px; display: block;
+  font-family:    var(--mono);
+  font-size:      10px;
+  color:          var(--accent);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom:  8px;
+  display:        block;
+  opacity:        .85;
 }
 .sec-title {
   font-family:    var(--hd);
@@ -347,11 +486,13 @@ p {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 12px 28px; min-height: 46px;
   font-family: var(--mono); font-size: 11px;
-  letter-spacing: 0.12em; text-transform: uppercase;
+  letter-spacing: 0.14em; text-transform: uppercase;
   cursor: pointer; border: none; background: transparent;
   color: var(--accent); position: relative; overflow: hidden;
   clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
   transition: color 0.22s ease, opacity 0.22s ease;
+  /* P3R menu item skew on hover */
+  transform-origin: left center;
 }
 .btn-p::before {
   content: ''; position: absolute; inset: 1px;
@@ -364,8 +505,9 @@ p {
   clip-path: polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
 }
 .btn-p span              { position: relative; z-index: 1; }
-.btn-p:hover             { color: var(--text); }
-.btn-p:hover::before     { background: linear-gradient(135deg, rgba(var(--accent-rgb),.2), rgba(var(--accent-rgb),.12)); }
+.btn-p:hover             { color: #ffffff; }
+.btn-p:hover::before     { background: linear-gradient(135deg, rgba(var(--accent-rgb),.22), rgba(var(--accent-rgb),.1)); }
+.btn-p:hover::after      { border-color: rgba(var(--accent-rgb),.7); box-shadow: inset 0 0 12px rgba(var(--accent-rgb),.08); }
 
 .btn-s {
   display: inline-flex; align-items: center; gap: 8px;
@@ -389,10 +531,10 @@ p {
 }
 .footer::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent), var(--purple), var(--accent2), transparent);
-  opacity: .22;
+  background: linear-gradient(90deg, transparent, var(--accent) 30%, var(--purple) 60%, var(--accent2) 85%, transparent);
+  opacity: .25;
 }
-.ft       { font-family: var(--mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.15em; }
+.ft       { font-family: var(--mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.18em; text-transform: uppercase; }
 .ft span  { color: var(--accent); }
 
 /* ── 11. CURSOR ─────────────────────────────────────────────── */
@@ -419,6 +561,18 @@ p {
 [data-theme="aurora"]   #p3d,
 [data-theme="ember"]    #p3c,
 [data-theme="ember"]    #p3d  { mix-blend-mode: screen; }
+
+/* P3R cursor: cyan ring with slightly larger presence */
+[data-theme="midnight"] #p3c {
+  width: 16px; height: 16px;
+  border-color: #00c8ff;
+  margin-left: -8px; margin-top: -8px;
+}
+[data-theme="midnight"] #p3d {
+  background: #e8003c;  /* SEES red dot */
+  width: 5px; height: 5px;
+  margin-left: -2.5px; margin-top: -2.5px;
+}
 
 #p3d {
   position: fixed;
@@ -607,7 +761,7 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
    ============================================================ */
 
 /* ── SHARED: sec gradient rules ─────────────────────────────── */
-[data-theme="midnight"] .sec-rule { background: linear-gradient(90deg, #00c8ff, #7b61ff, #ffd700, transparent); }
+[data-theme="midnight"] .sec-rule { background: linear-gradient(90deg, #00c8ff, #0050a0, #ffd700, transparent); }
 [data-theme="aurora"]   .sec-rule { background: linear-gradient(90deg, #c084fc, #f472b6, transparent); }
 [data-theme="ember"]    .sec-rule { background: linear-gradient(90deg, #f97316, #eab308, transparent); }
 [data-theme="dawn"]     .sec-rule { background: linear-gradient(90deg, #0284c7, #7c3aed, transparent); }
@@ -619,13 +773,13 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
 [data-theme="dawn"]     .sec-title .dim { color: rgba(2,132,199,.18);   }
 
 /* ── SHARED: big section numbers ────────────────────────────── */
-[data-theme="midnight"] .sec-n { color: rgba(0,200,255,.05);    }
+[data-theme="midnight"] .sec-n { color: rgba(0,200,255,.055);   }
 [data-theme="aurora"]   .sec-n { color: rgba(192,132,252,.06);  }
 [data-theme="ember"]    .sec-n { color: rgba(249,115,22,.07);   }
 [data-theme="dawn"]     .sec-n { color: rgba(2,132,199,.08);    }
 
 /* ── SHARED: skill bar gradients ────────────────────────────── */
-[data-theme="midnight"] .sk-fill { background: linear-gradient(90deg, #00c8ff, #7b61ff); }
+[data-theme="midnight"] .sk-fill { background: linear-gradient(90deg, #00c8ff 40%, #ffd700); box-shadow: 0 0 8px rgba(0,200,255,.5), 0 0 2px rgba(0,200,255,.9); }
 [data-theme="aurora"]   .sk-fill { background: linear-gradient(90deg, #c084fc, #f472b6); }
 [data-theme="ember"]    .sk-fill { background: linear-gradient(90deg, #eab308, #f97316); box-shadow: 0 0 5px rgba(249,115,22,.4); }
 [data-theme="dawn"]     .sk-fill { background: linear-gradient(90deg, #0284c7, #7c3aed); box-shadow: none; }
@@ -639,6 +793,8 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
 [data-theme="dawn"]   .p-ring2 { border-right-color: rgba(217,119,6,.35);   }
 
 /* ── SHARED: footer + nav gradient lines ────────────────────── */
+[data-theme="midnight"] .footer::before { background: linear-gradient(90deg, transparent, #00c8ff, #0050a0, #ffd700, transparent); }
+[data-theme="midnight"] .nav::after      { background: linear-gradient(90deg, transparent, #00c8ff, #0050a0, #ffd700, transparent); opacity: .3; }
 [data-theme="aurora"] .footer::before,
 [data-theme="aurora"] .nav::after   { background: linear-gradient(90deg, transparent, #c084fc, #f472b6, transparent); }
 [data-theme="ember"]  .footer::before,
@@ -655,6 +811,23 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
    MIDNIGHT — no overrides needed, all defaults are for midnight
    ═══════════════════════════════════════════════════════════════ */
 
+
+/* ── MIDNIGHT bg: P3R deep navy — cyan breath top, red depth bottom ── */
+[data-theme="midnight"] .bg-g {
+  background:
+    radial-gradient(ellipse 85% 50% at 20% 0%,   rgba(0,200,255,.09)  0%, transparent 50%),
+    radial-gradient(ellipse 60% 70% at 80% 100%,  rgba(232,0,60,.06)   0%, transparent 55%),
+    radial-gradient(ellipse 100% 60% at 50% 100%, rgba(0,16,48,.9)     0%, transparent 65%);
+}
+[data-theme="midnight"] .bg-slash::before {
+  background: rgba(0,200,255,.06);
+}
+[data-theme="midnight"] .bg-slash::after {
+  background: rgba(0,200,255,.03);
+}
+[data-theme="midnight"] .clock-ring  { border-color: rgba(0,200,255,.07); }
+[data-theme="midnight"] .clock-ring2 { border-color: rgba(0,200,255,.045); }
+[data-theme="midnight"] .clock-ring::before { background: #00c8ff; }
 /* ═══════════════════════════════════════════════════════════════
    VIOLET / AURORA — Deep purple, dreamy, romantic
    Typography: Cinzel lighter weight, wide spacing, airy feel
@@ -784,6 +957,7 @@ button:not(.nav-burger):not(.nav-theme-dot):not(.drawer-theme-dot):not(.ss-dot):
 }
 [data-theme="dawn"] .bg-grid  { opacity: .2; }
 [data-theme="dawn"] .bg-dots  { display: none; }
+[data-theme="dawn"] .bg-slash { display: none; }
 [data-theme="dawn"] .scan,
 [data-theme="dawn"] .clock-ring,
 [data-theme="dawn"] .clock-ring2 { display: none; }

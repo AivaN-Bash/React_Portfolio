@@ -37,6 +37,7 @@ const PAGES = {
 const Background = memo(() => (
   <div className="bg-l" aria-hidden="true">
     <div className="bg-g"/>
+    <div className="bg-slash"/>
     <div className="bg-grid"/>
     <div className="bg-dots"/>
     <div className="scan"/>
@@ -52,6 +53,12 @@ const Background = memo(() => (
     <svg className="bg-tri t3" width="38"  height="38"  viewBox="0 0 40 40" fill="none">
       <polygon points="20,2 38,36 2,36" stroke="var(--purple)"  strokeWidth="1.5" fill="none"/>
     </svg>
+
+    {/* P3R floating fragments — inspired by blue flame particles in P3R key art */}
+    <div className="bg-fragments" aria-hidden="true">
+      <span/><span/><span/><span/>
+      <span/><span/><span/><span/>
+    </div>
   </div>
 ));
 Background.displayName = "Background";
