@@ -27,7 +27,9 @@ export default function useScrollReveal({ delay = 0, y = 22 } = {}) {
 
     el.style.opacity    = "0";
     el.style.transform  = `translateY(${Math.min(y, 16)}px)`;
-    el.style.transition = `opacity 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+    // --ease-enter (0.22,1,0.36,1): starts fast, decelerates to rest — Velvet Room reveal
+    const velvetEnter = 'cubic-bezier(0.22, 1, 0.36, 1)';
+    el.style.transition = `opacity 0.7s ${velvetEnter} ${delay}ms, transform 0.7s ${velvetEnter} ${delay}ms`;
     el.style.willChange = "opacity, transform";
 
     const observer = new IntersectionObserver(

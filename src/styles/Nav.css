@@ -130,9 +130,10 @@
   width: 22px; height: 2px;
   background: var(--accent);
   border-radius: 1px;
-  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
-              opacity   0.3s ease,
-              width     0.3s ease;
+  /* ease-hover: slight overshoot makes lines feel snappy and alive */
+  transition: transform 0.35s var(--ease-hover, ease),
+              opacity   0.25s ease,
+              width     0.25s ease;
   transform-origin: center;
 }
 .nav-burger.open .burger-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -162,8 +163,9 @@
   /* Slide from top — spring easing */
   transform:      translateY(-100%);
   opacity:        0;
-  transition:     transform 0.4s cubic-bezier(0.16,1,0.3,1),
-                  opacity   0.25s ease;
+  /* Velvet Room door opening — weighted deceleration */
+  transition:     transform 0.45s var(--ease-enter, ease),
+                  opacity   0.3s var(--ease-enter, ease);
   pointer-events: none;
 }
 @supports (backdrop-filter: blur(1px)) {
@@ -212,7 +214,7 @@
 }
 /* Entrance animation plays when drawer is open */
 .nav-drawer.open .drawer-item {
-  animation: drawerItemIn 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  animation: drawerItemIn 0.5s var(--ease-enter, ease) both;
 }
 
 /* Stagger drawer items via CSS — no inline style needed */

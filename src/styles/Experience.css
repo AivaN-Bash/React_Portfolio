@@ -16,7 +16,7 @@
   border-left: 2px solid rgba(var(--accent-rgb),.5);
   padding: 24px 26px 24px 68px;
   clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
-  animation: slideR 0.55s cubic-bezier(0.16,1,0.3,1) both;
+  animation: slideR 0.65s var(--ease-enter, ease) both;
   contain: layout;
   transition: transform 0.28s var(--ease), border-color 0.28s var(--ease);
 }
