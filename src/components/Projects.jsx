@@ -9,7 +9,7 @@ const STATUS_CLASS = {
   "Completed":   "ps-done",
 };
 
-export default function Projects({ t = (k) => k, lang }) {
+export default function Projects({ t = (k) => k, lang = 'en' }) {
   const headerRef = useScrollReveal({ delay: 0   });
   const gridReveal = useScrollReveal({ delay: 120 });
 
@@ -59,8 +59,8 @@ export default function Projects({ t = (k) => k, lang }) {
               </span>
             </div>
 
-            <h3 className="proj-title">{p.title}</h3>
-            <p  className="proj-desc">{p.desc}</p>
+            <h3 className="proj-title">{lang === 'th' ? p.title_th : p.title}</h3>
+            <p  className="proj-desc">{lang === 'th' ? p.desc_th : p.desc}</p>
 
             <ul className="proj-tags" aria-label="Technologies">
               {p.tags.map(tag => (

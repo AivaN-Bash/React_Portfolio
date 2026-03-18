@@ -5,7 +5,7 @@ import useScrollReveal from "../hooks/useScrollReveal";
 
 const TAG_CLASS = { Expert: "b-ex", Advanced: "b-ad", Intermediate: "b-in" };
 
-export default function Skills({ t = (k) => k, lang }) {
+export default function Skills({ t = (k) => k, lang = 'en' }) {
   const [tab,  setTab]  = useState("backend");
   const [anim, setAnim] = useState(false);
   // tabKey forces a remount of the grid when tab changes,
@@ -54,7 +54,7 @@ export default function Skills({ t = (k) => k, lang }) {
             data-arcana={val.arcana}
             onClick={() => handleTab(key)}
           >
-            {val.icon} {val.label}
+            {val.icon} {lang === 'th' ? val.label_th : val.label}
           </button>
         ))}
       </div>
@@ -76,7 +76,7 @@ export default function Skills({ t = (k) => k, lang }) {
             <div className="sk-tr" aria-hidden="true"/>
             <div className="sk-bl" aria-hidden="true"/>
             <div className="sk-top">
-              <span className="sk-name">{skill.name}</span>
+              <span className="sk-name">{lang === 'th' ? skill.name_th : skill.name}</span>
               <span className={`sk-badge ${TAG_CLASS[skill.tag]}`}
                 aria-label={`${skill.tag} level`}>
                 {skill.tag}

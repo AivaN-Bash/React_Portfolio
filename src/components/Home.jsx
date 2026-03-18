@@ -6,12 +6,21 @@ import useTyping from "../hooks/useTyping";
 import useRipple  from "../hooks/useRipple";
 
 // ── Constants ────────────────────────────────────────────────
-const ROLES = [
+// Bilingual roles — indexed, not translated via t() because useTyping
+// takes a simple string array. We pass the right array per lang.
+const ROLES_EN = [
   "Backend Developer",
   "API Engineer",
   "Node.js Developer",
   "Python Developer",
   "Database Designer",
+];
+const ROLES_TH = [
+  "นักพัฒนา Backend",
+  "วิศวกร API",
+  "นักพัฒนา Node.js",
+  "นักพัฒนา Python",
+  "ออกแบบฐานข้อมูล",
 ];
 
 const STACK = [
@@ -60,8 +69,9 @@ const GlitchName = memo(({ text }) => (
 GlitchName.displayName = "GlitchName";
 
 // ── Component ────────────────────────────────────────────────
-export default function Home({ setPage, t, lang }) {
-  const typedRole = useTyping(ROLES);
+export default function Home({ setPage, t, lang = 'en' }) {
+  const roles     = lang === 'th' ? ROLES_TH : ROLES_EN;
+  const typedRole = useTyping(roles);
   const { cardRef, glowRef } = useTilt(11);
   const ripple = useRipple();
 
@@ -100,7 +110,7 @@ export default function Home({ setPage, t, lang }) {
           <span className="typing-cursor" aria-hidden="true">_</span>
         </div>
 
-        <p className="hero-about">{ME.about}</p>
+        <p className="hero-about">{lang === 'th' ? ME.about_th : ME.about}</p>
 
         {/* P3-style status bars — decorative */}
         <div className="sb-wrap" aria-hidden="true">
@@ -171,7 +181,7 @@ export default function Home({ setPage, t, lang }) {
             <div className="p-cname">{firstName}<br/>{lastName}</div>
             <div className="p-cnick">「 {ME.nickname} 」</div>
             <div className="p-bar"/>
-            <div className="p-crole">{ME.role}</div>
+            <div className="p-crole">{lang === 'th' ? ME.role_th : ME.role}</div>
             <div className="p-dots">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className={`p-dot${i < 3 ? " on" : ""}`}/>

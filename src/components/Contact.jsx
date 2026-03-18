@@ -37,7 +37,7 @@ const LIMITS = { name: 80, email: 120, subject: 120, message: 1000 };
 // ── Initial state ─────────────────────────────────────────────
 const EMPTY = { name: "", email: "", subject: "", message: "" };
 
-export default function Contact({ t = (k) => k, lang }) {
+export default function Contact({ t = (k) => k, lang = 'en' }) {
   const [form,   setForm]   = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | sent | error
@@ -135,7 +135,7 @@ export default function Contact({ t = (k) => k, lang }) {
     {
       icon:  "◎",
       label: t("contact_label_location"),
-      val:   ME.location,
+      val:   lang === 'th' ? ME.location_th : ME.location,
       href:  null,
     },
   ];
