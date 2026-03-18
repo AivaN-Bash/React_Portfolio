@@ -213,9 +213,13 @@ p {
   letter-spacing: 0;
 }
 
-::-webkit-scrollbar       { width: 3px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+::-webkit-scrollbar       { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), var(--purple));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ── THAI LANGUAGE OVERRIDES ─────────────────────────────────
    When <html lang="th"> is set by useLang:
@@ -251,9 +255,9 @@ p {
 
 
 /* ── 6. ANIMATIONS ──────────────────────────────────────────── */
-@keyframes fadeUp  { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0);   } }
+@keyframes fadeUp  { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0);   } }
 @keyframes fadeIn  { from { opacity:0; }                             to { opacity:1;                              } }
-@keyframes slideR  { from { opacity:0; transform:translateX(-16px); } to { opacity:1; transform:translateX(0); } }
+@keyframes slideR  { from { opacity:0; transform:translateX(-12px); } to { opacity:1; transform:translateX(0); } }
 @keyframes spin    { to   { transform: rotate(360deg);  } }
 @keyframes spinR   { to   { transform: rotate(-360deg); } }
 @keyframes float   { 0%,100% { transform:translateY(0);   } 50% { transform:translateY(-12px); } }
@@ -390,10 +394,11 @@ p {
 /* Tick marks on rings */
 .clock-ring::before {
   content: '';
-  position: absolute; top: -2px; left: 50%;
-  width: 4px; height: 4px; border-radius: 50%;
-  background: var(--accent); opacity: .4;
+  position: absolute; top: -3px; left: 50%;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); opacity: .6;
   transform: translateX(-50%);
+  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(var(--accent-rgb), .3);
 }
 
 /* Triangles — P3R style sharp fragments */
@@ -453,12 +458,12 @@ p {
   min-height: 100vh;
   opacity:    1;
   transform:  translateY(0);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 /* Page-out class — applied during route transition */
 .page--out {
   opacity:   0;
-  transform: translateY(8px);
+  transform: translateY(6px); /* subtle — content doesn't need to travel far */
 }
 
 .sec {
@@ -515,7 +520,7 @@ p {
 .sec-rule {
   height: 1px; margin-top: 14px;
   background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent2), transparent);
-  animation: barFill 1.2s .4s forwards; --w: 180px; width: 0;
+  animation: barFill 1.4s cubic-bezier(0.16,1,0.3,1) .3s forwards; --w: 180px; width: 0;
 }
 
 /* ── 9. SHARED BUTTONS ──────────────────────────────────────── */
@@ -633,7 +638,7 @@ p {
   border-radius: 50%;
   background: rgba(var(--accent-rgb), .25);
   pointer-events: none;
-  animation: ripple 0.55s ease forwards;
+  animation: ripple 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 
 /* Tap feedback */

@@ -40,8 +40,7 @@ const MoonSVG = memo(() => (
   <svg
     width="120" height="120" viewBox="0 0 120 120" fill="none"
     aria-hidden="true"
-    style={{ position: "absolute", opacity: .1, top: "-20px", right: "-20px",
-             pointerEvents: "none", color: "var(--accent)" }}
+    className="p-moon-svg"
   >
     <circle cx="60" cy="60" r="50" stroke="currentColor" strokeWidth="1"/>
     <path

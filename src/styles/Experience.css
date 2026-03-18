@@ -21,10 +21,11 @@
   transition: transform 0.28s var(--ease), border-color 0.28s var(--ease), box-shadow 0.28s var(--ease);
 }
 .exp-card:hover {
-  border-color: rgba(var(--accent-rgb),.45);
+  border-color:      rgba(var(--accent-rgb),.45);
   border-left-color: var(--accent);
-  transform: translateX(6px);
-  box-shadow: -3px 0 16px rgba(var(--accent-rgb),.12);
+  transform:         translateX(6px);
+  box-shadow:        -4px 0 24px rgba(var(--accent-rgb),.14),
+                     0 8px 32px rgba(var(--accent-rgb),.06);
 }
 
 /* Special — Work & Travel card */

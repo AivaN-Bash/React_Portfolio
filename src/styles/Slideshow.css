@@ -38,7 +38,7 @@
   height:         100%;
   object-fit:     cover;
   display:        block;
-  animation:      ssIn .5s ease forwards;
+  animation:      ssIn 0.55s cubic-bezier(0.16,1,0.3,1) forwards;
   pointer-events: none;
 }
 @keyframes ssIn {
