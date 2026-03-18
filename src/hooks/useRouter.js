@@ -68,7 +68,7 @@ export default function useRouter() {
   const timerRef   = useRef(null);
 
   // Keep ref in sync with state
-  useEffect(() => { pageRef.current = page; }, [page]);
+  useEffect(() => { pageRef.current = page; return undefined; }, [page]);
 
   // Stamp initial history entry once on mount
   useEffect(() => {

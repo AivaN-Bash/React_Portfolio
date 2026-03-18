@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import "../styles/Nav.css";
 import ME         from "../data/me";
 import useRipple  from "../hooks/useRipple";
@@ -23,8 +23,22 @@ const lockScroll   = () => document.body.classList.add("scroll-locked");
 const unlockScroll = () => document.body.classList.remove("scroll-locked");
 
 export default function Nav({ page, setPage, theme, setTheme, lang, setLang, t }) {
-  const [open, setOpen] = useState(false);
+  const [open,     setOpen]     = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const ripple = useRipple();
+  const prevY  = useRef(0);
+
+  // Shrink nav on scroll — passive listener, gated setState
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const should = y > 40;
+      if (should !== (prevY.current > 40)) setScrolled(should);
+      prevY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Stable navigate — no page in deps (uses pageRef in useRouter)
   const navigate = useCallback((id) => {
@@ -79,7 +93,7 @@ export default function Nav({ page, setPage, theme, setTheme, lang, setLang, t }
   return (
     <>
       {/* ── Top nav bar ── */}
-      <nav className="nav" role="navigation" aria-label="Main navigation">
+      <nav className={`nav${scrolled ? " nav--compact" : ""}`} role="navigation" aria-label="Main navigation">
 
         <button
           className="nav-logo"
@@ -168,7 +182,7 @@ export default function Nav({ page, setPage, theme, setTheme, lang, setLang, t }
               onTouchStart={navTouch[l.id]}
               aria-current={isActive(l.id) ? "page" : undefined}
               tabIndex={open ? 0 : -1}
-              style={{ animationDelay: open ? `${i * 0.06}s` : "0s" }}
+              data-idx={i}
             >
               {/* Small dim number — left side */}
               <span className="drawer-num" aria-hidden="true">{l.num}</span>

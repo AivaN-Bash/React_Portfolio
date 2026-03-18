@@ -1,19 +1,15 @@
 /* ── SKILLS ─────────────────────────────────────────────────── */
 
 /* ── Tab bar ────────────────────────────────────────────────── */
-/*
-  Desktop: horizontal underline tabs with arcana text above
-  Mobile:  pill buttons that wrap naturally — no horizontal scroll
-*/
 .sk-tabs {
-  display: flex;
-  gap: 0;
-  margin-bottom: 36px;
+  display:       flex;
+  gap:           0;
+  margin-bottom: 32px;
   border-bottom: 1px solid rgba(var(--accent-rgb), .1);
 }
 
 .sk-tab {
-  position: relative;
+  position:       relative;
   font-family:    var(--mono);
   font-size:      10px;
   letter-spacing: 0.12em;
@@ -28,14 +24,12 @@
   margin-bottom:  -1px;
   flex-shrink:    0;
   transition:     color 0.2s ease, border-color 0.2s ease;
-  /* Leave room above for arcana label */
-  margin-top: 20px;
+  margin-top:     20px; /* room for arcana label */
 }
-
 .sk-tab:hover { color: var(--accent); }
 .sk-tab.on    { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* Arcana label above active tab — desktop only */
+/* Arcana label above active tab */
 .sk-tab.on::after {
   content:        attr(data-arcana);
   position:       absolute;
@@ -51,122 +45,87 @@
   pointer-events: none;
 }
 
-/* ── Skill grid ─────────────────────────────────────────────── */
+/* ── Skill tag grid — clean, no fake metrics ────────────────── */
 .sk-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 10px;
 }
 
-.sk-card {
-  background: rgba(var(--bg2-rgb), .85);
-  border:     1px solid rgba(var(--accent-rgb), .1);
-  padding:    18px 20px;
-  position:   relative;
-  overflow:   hidden;
+/* Each skill is a horizontal row: name left, badge right */
+.sk-tag {
+  display:        flex;
+  align-items:    center;
+  justify-content: space-between;
+  padding:        14px 18px;
+  background:     rgba(var(--bg2-rgb), .85);
+  border:         1px solid rgba(var(--accent-rgb), .1);
   clip-path: polygon(
-    0 0, calc(100% - 13px) 0, 100% 13px,
-    100% 100%, 13px 100%, 0 calc(100% - 13px)
+    0 0, calc(100% - 10px) 0, 100% 10px,
+    100% 100%, 10px 100%, 0 calc(100% - 10px)
   );
-  transition: transform 0.28s var(--ease),
-              box-shadow 0.28s var(--ease),
-              border-color 0.28s var(--ease);
+  transition: border-color 0.2s ease, transform 0.2s ease,
+              background-color 0.2s ease;
   contain: layout;
 }
-.sk-card::before {
-  content:    '';
-  position:   absolute;
-  inset:      0;
-  background: linear-gradient(135deg, rgba(var(--accent-rgb), .04), transparent);
-  opacity:    0;
-  transition: opacity .3s;
+.sk-tag:hover {
+  border-color:     rgba(var(--accent-rgb), .35);
+  transform:        translateY(-2px);
+  background-color: rgba(var(--accent-rgb), .04);
 }
-.sk-card:hover              { border-color: rgba(var(--accent-rgb), .35); transform: translateY(-2px); }
-.sk-card:hover::before      { opacity: 1; }
 
-/* Corner accents */
-.sk-tr { position: absolute; top: 5px; right: 5px; width: 6px; height: 6px; border-right: 1px solid rgba(var(--accent-rgb), .26); border-top: 1px solid rgba(var(--accent-rgb), .26); }
-.sk-bl { position: absolute; bottom: 5px; left: 5px; width: 6px; height: 6px; border-left: 1px solid rgba(var(--accent-rgb), .26); border-bottom: 1px solid rgba(var(--accent-rgb), .26); }
+/* Tag badge colours by level */
+.sk-tag.b-ex { border-left: 2px solid rgba(var(--accent-rgb),  .5); }
+.sk-tag.b-ad { border-left: 2px solid rgba(var(--accent-rgb),  .3); }
+.sk-tag.b-in { border-left: 2px solid rgba(var(--accent2-rgb), .3); }
 
-.sk-top   { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.sk-name  { font-family: var(--body); font-size: 0.9375rem; font-weight: 600; color: var(--text); letter-spacing: 0; }
-.sk-badge {
+.sk-tag-name {
+  font-family: var(--body);
+  font-size:   0.9375rem;
+  font-weight: 600;
+  color:       var(--text);
+  letter-spacing: 0;
+}
+
+.sk-tag-badge {
   font-family:    var(--mono);
-  font-size:      9px;
-  letter-spacing: 0.06em;
+  font-size:      8px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding:        2px 8px;
-  clip-path: polygon(
-    0 0, calc(100% - 5px) 0, 100% 5px,
-    100% 100%, 5px 100%, 0 calc(100% - 5px)
-  );
+  padding:        3px 8px;
+  border-radius:  2px;
+  flex-shrink:    0;
 }
-.b-ex { background: rgba(var(--accent-rgb),  .12); color: var(--accent);  }
-.b-ad { background: rgba(var(--accent-rgb),  .08); color: var(--accent);  }
-.b-in { background: rgba(var(--accent2-rgb), .09); color: var(--accent2); }
-
-.sk-track {
-  height:     3px;
-  background: rgba(var(--text-rgb), .06);
-  overflow:   hidden;
-}
-.sk-fill {
-  height:     100%;
-  background: linear-gradient(90deg, var(--accent), var(--purple));
-  box-shadow: 0 0 5px rgba(var(--accent-rgb), .45);
-  transition: width 1.3s cubic-bezier(.4, 0, .2, 1);
-}
-.sk-pct {
-  font-family: var(--mono);
-  font-size:   9px;
-  color:       rgba(var(--accent-rgb), .65);
-  margin-top:  6px;
-  text-align:  right;
-  letter-spacing: 0.06em;
-}
+.sk-tag-badge.b-ex { background: rgba(var(--accent-rgb),  .12); color: var(--accent);  }
+.sk-tag-badge.b-ad { background: rgba(var(--accent-rgb),  .08); color: var(--accent);  }
+.sk-tag-badge.b-in { background: rgba(var(--accent2-rgb), .09); color: var(--accent2); }
 
 /* ── RESPONSIVE ─────────────────────────────────────────────── */
-/*
-  On mobile: tabs become a flex-wrap pill row.
-  No horizontal scroll, no arcana overflow — all tabs visible.
-*/
 @media (max-width: 640px) {
-  /* Switch to wrapping pill tabs */
   .sk-tabs {
     flex-wrap:     wrap;
     gap:           8px;
     border-bottom: none;
     margin-bottom: 24px;
   }
-
   .sk-tab {
-    /* Pill shape */
-    padding:       8px 16px;
-    font-size:     9px;
-    letter-spacing: 0.1em;
-    margin-top:    0;        /* no room needed — arcana hidden */
-    margin-bottom: 0;
-    border-bottom: none;
-    border-radius: 20px;
-    border:        1px solid rgba(var(--accent-rgb), .18);
-    background:    rgba(var(--accent-rgb), .04);
-    flex-shrink:   0;
+    padding:        8px 16px;
+    font-size:      9px;
+    margin-top:     0;
+    margin-bottom:  0;
+    border-bottom:  none;
+    border-radius:  20px;
+    border:         1px solid rgba(var(--accent-rgb), .18);
+    background:     rgba(var(--accent-rgb), .04);
   }
-
-  .sk-tab:hover {
-    background: rgba(var(--accent-rgb), .1);
-    border-color: rgba(var(--accent-rgb), .35);
-  }
-
-  .sk-tab.on {
-    background:  rgba(var(--accent-rgb), .14);
-    border-color: var(--accent);
-    color:        var(--accent);
-  }
-
-  /* Hide arcana text on mobile — no room */
+  .sk-tab.on     { background: rgba(var(--accent-rgb), .14); border-color: var(--accent); }
   .sk-tab.on::after { display: none; }
-
-  /* Single column on small phones */
   .sk-grid { grid-template-columns: 1fr; }
 }
+
+/* Dawn theme */
+[data-theme="dawn"] .sk-tag          { background: rgba(255,255,255,.7); border-color: rgba(2,132,199,.12); }
+[data-theme="dawn"] .sk-tag:hover    { background: rgba(2,132,199,.05); }
+[data-theme="dawn"] .sk-tag.b-ex     { border-left-color: rgba(2,132,199,.5); }
+[data-theme="dawn"] .sk-tag.b-ad     { border-left-color: rgba(2,132,199,.3); }
+[data-theme="dawn"] .sk-tag.b-in     { border-left-color: rgba(217,119,6,.3); }

@@ -82,9 +82,10 @@
 
 /* Status bars */
 .sb-wrap {
-  display: flex; flex-direction: column; gap: 8px;
-  margin-bottom: 32px;
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 28px;
   animation: fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) .38s both;
+  opacity: .85; /* visually subordinate — decorative */
 }
 .sb-row  { display: flex; align-items: center; gap: 12px; }
 .sb-lbl  {

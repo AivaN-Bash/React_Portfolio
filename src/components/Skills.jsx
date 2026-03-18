@@ -1,31 +1,23 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import "../styles/Skills.css";
 import SKILLS       from "../data/skills";
 import useScrollReveal from "../hooks/useScrollReveal";
 
-const TAG_CLASS = { Expert: "b-ex", Advanced: "b-ad", Intermediate: "b-in" };
+// Level → display label
+const LEVEL_LABEL = { Expert: "★★★", Advanced: "★★☆", Intermediate: "★☆☆" };
+const TAG_CLASS   = { Expert: "b-ex", Advanced: "b-ad", Intermediate: "b-in" };
 
-export default function Skills({ t = (k) => k, lang = 'en' }) {
-  const [tab,  setTab]  = useState("backend");
-  const [anim, setAnim] = useState(false);
-  // tabKey forces a remount of the grid when tab changes,
-  // which restarts the stagger animation cleanly
+export default function Skills({ t = (k) => k, lang = "en" }) {
+  const [tab,    setTab]    = useState("backend");
   const [tabKey, setTabKey] = useState(0);
 
   const headerRef = useScrollReveal({ delay: 0   });
-  const tabsRef   = useScrollReveal({ delay: 100 });
-  const gridRef   = useScrollReveal({ delay: 180 });
-
-  // Trigger bar fill animation after tab change
-  useEffect(() => {
-    setAnim(false);
-    const t = setTimeout(() => setAnim(true), 60);
-    return () => clearTimeout(t);
-  }, [tab]);
+  const tabsRef   = useScrollReveal({ delay: 80  });
+  const gridRef   = useScrollReveal({ delay: 160 });
 
   const handleTab = useCallback((key) => {
     setTab(key);
-    setTabKey(k => k + 1); // forces grid remount → animation restarts
+    setTabKey(k => k + 1);
   }, []);
 
   const current = SKILLS[tab];
@@ -38,11 +30,14 @@ export default function Skills({ t = (k) => k, lang = 'en' }) {
         <div className="sec-n">01</div>
         <div>
           <span className="sec-ey">{t("sec_skills_ey")}</span>
-          <h2 className="sec-title">{t("sec_skills_title")} <span className="dim">{t("sec_skills_dim")}</span></h2>
+          <h2 className="sec-title">
+            {t("sec_skills_title")} <span className="dim">{t("sec_skills_dim")}</span>
+          </h2>
           <div className="sec-rule"/>
         </div>
       </div>
 
+      {/* Category tabs */}
       <div className="sk-tabs" ref={tabsRef} role="tablist" aria-label="Skill categories">
         {Object.entries(SKILLS).map(([key, val]) => (
           <button
@@ -54,12 +49,12 @@ export default function Skills({ t = (k) => k, lang = 'en' }) {
             data-arcana={val.arcana}
             onClick={() => handleTab(key)}
           >
-            {val.icon} {lang === 'th' ? val.label_th : val.label}
+            {val.icon} {lang === "th" ? val.label_th : val.label}
           </button>
         ))}
       </div>
 
-      {/* key=tabKey forces remount so fadeUp animation replays on tab change */}
+      {/* Skill tag grid — no progress bars, no fake % numbers */}
       <div
         key={tabKey}
         id={`sk-panel-${tab}`}
@@ -70,24 +65,18 @@ export default function Skills({ t = (k) => k, lang = 'en' }) {
         {current.items.map((skill, i) => (
           <div
             key={skill.name}
-            className="sk-card"
-            style={{ animation: `fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.055}s both` }}
+            className={`sk-tag ${TAG_CLASS[skill.tag]}`}
+            style={{ animation: `fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 0.05}s both` }}
           >
-            <div className="sk-tr" aria-hidden="true"/>
-            <div className="sk-bl" aria-hidden="true"/>
-            <div className="sk-top">
-              <span className="sk-name">{lang === 'th' ? skill.name_th : skill.name}</span>
-              <span className={`sk-badge ${TAG_CLASS[skill.tag]}`}
-                aria-label={`${skill.tag} level`}>
-                {skill.tag}
-              </span>
-            </div>
-            <div className="sk-track" role="progressbar"
-              aria-valuenow={skill.level} aria-valuemin={0} aria-valuemax={100}
-              aria-label={`${skill.name} proficiency`}>
-              <div className="sk-fill" style={{ width: anim ? `${skill.level}%` : "0%" }}/>
-            </div>
-            <div className="sk-pct" aria-hidden="true">{skill.level}%</div>
+            <span className="sk-tag-name">
+              {lang === "th" ? skill.name_th : skill.name}
+            </span>
+            <span
+              className={`sk-tag-badge ${TAG_CLASS[skill.tag]}`}
+              aria-label={`${skill.tag} level`}
+            >
+              {skill.tag}
+            </span>
           </div>
         ))}
       </div>

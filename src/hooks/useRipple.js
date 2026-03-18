@@ -27,7 +27,8 @@ export default function useRipple() {
 
     button.appendChild(wave);
 
-    // Remove after animation completes
+    // { once: true } makes this listener self-removing — no removeEventListener needed.
+    // The wave element is also removed from DOM, releasing all associated memory.
     wave.addEventListener("animationend", () => wave.remove(), { once: true });
   }, []);
 

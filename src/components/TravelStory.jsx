@@ -19,12 +19,17 @@ export default function TravelStory({ t = (k) => k, lang = "en" }) {
 
   // Restart card animations on mount
   useEffect(() => {
-    const cards = chapGridEl.current?.querySelectorAll(".chapter-card");
-    cards?.forEach((card, i) => {
+    const el = chapGridEl.current;
+    if (!el) return;
+    const cards = el.querySelectorAll(".chapter-card");
+    cards.forEach((card, i) => {
       card.style.animation = "none";
-      void card.offsetHeight;
+      void card.offsetHeight; // intentional reflow
       card.style.animation = `fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) ${i * 0.075}s both`;
     });
+    return () => {
+      cards.forEach(card => { card.style.animation = ""; });
+    };
   }, []);
 
   return (

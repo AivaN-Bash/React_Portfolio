@@ -125,13 +125,13 @@ export default function Home({ setPage, t, lang = 'en' }) {
           </div>
         </div>
 
-        {/* CTA buttons */}
+        {/* CTA buttons — primary: View Projects, secondary: Contact, tertiary: CV */}
         <div className="hero-btns">
-          <button {...ripple} className="btn-p ripple-origin" onClick={() => setPage("contact")}>
-            <span>✉ {t("hero_cta_contact")}</span>
+          <button {...ripple} className="btn-p ripple-origin" onClick={() => setPage("projects")}>
+            <span>▶ {t("hero_cta_projects")}</span>
           </button>
-          <button {...ripple} className="btn-s ripple-origin" onClick={() => setPage("projects")}>
-            ▶ {t("hero_cta_projects")}
+          <button {...ripple} className="btn-s ripple-origin" onClick={() => setPage("contact")}>
+            ✉ {t("hero_cta_contact")}
           </button>
           <a
             className="btn-cv"

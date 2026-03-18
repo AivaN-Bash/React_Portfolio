@@ -18,12 +18,18 @@ export default function Projects({ t = (k) => k, lang = 'en' }) {
 
   // Re-trigger card animations when page mounts
   useEffect(() => {
-    const cards = gridEl.current?.querySelectorAll(".proj-card");
-    cards?.forEach((card, i) => {
+    const el = gridEl.current;
+    if (!el) return;
+    const cards = el.querySelectorAll(".proj-card");
+    cards.forEach((card, i) => {
       card.style.animation = "none";
-      void card.offsetHeight; // force reflow
+      void card.offsetHeight; // intentional reflow — restarts CSS animation
       card.style.animation = `fadeUp 0.55s cubic-bezier(0.16,1,0.3,1) ${i * 0.075}s both`;
     });
+    return () => {
+      // Clear inline animation styles on unmount — releases browser resources
+      cards.forEach(card => { card.style.animation = ""; });
+    };
   }, []);
 
   return (

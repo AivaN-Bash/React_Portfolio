@@ -267,7 +267,10 @@ p {
   50%     { filter: drop-shadow(0 0 22px rgba(var(--accent-rgb), 0.9)); }
 }
 @keyframes pulse       { 0%,100% { opacity:.4; } 50% { opacity:1; } }
-@keyframes barFill     { from { width:0; } to { width:var(--w); } }
+@keyframes barFill {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
 @keyframes progressBar { from { width:0%; } to { width:100%; } }
 @keyframes ssIn        { from { opacity:0; transform:scale(1.03); } to { opacity:1; transform:scale(1); } }
 @keyframes ripple      { from { transform:translate(-50%,-50%) scale(0); opacity:.35; } to { transform:translate(-50%,-50%) scale(4); opacity:0; } }
@@ -372,9 +375,9 @@ p {
 
 /* P3R scan line — thinner, faster */
 .scan {
-  position: absolute; left: 0; right: 0; height: 120px;
-  background: linear-gradient(transparent, rgba(var(--accent-rgb), .018), transparent);
-  animation: scanH 12s linear infinite;
+  position: absolute; left: 0; right: 0; height: 100px;
+  background: linear-gradient(transparent, rgba(var(--accent-rgb), .012), transparent);
+  animation: scanH 18s linear infinite; /* slower = less distracting */
   will-change: transform;
 }
 
@@ -520,7 +523,10 @@ p {
 .sec-rule {
   height: 1px; margin-top: 14px;
   background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent2), transparent);
-  animation: barFill 1.4s cubic-bezier(0.16,1,0.3,1) .3s forwards; --w: 180px; width: 0;
+  animation: barFill 1.4s cubic-bezier(0.16,1,0.3,1) .3s forwards;
+  width: 180px;           /* fixed width — scaleX(0) collapses it */
+  transform-origin: left center;
+  transform: scaleX(0);   /* start collapsed */
 }
 
 /* ── 9. SHARED BUTTONS ──────────────────────────────────────── */
@@ -718,7 +724,7 @@ body.scroll-locked .stt-btn { opacity: 0 !important; pointer-events: none !impor
   font-weight:    700;
   letter-spacing: 0.05em;
   color:          var(--accent);
-  opacity:        .022;
+  opacity:        .016; /* reduced — premium restraint */
   writing-mode:   vertical-rl;
   line-height:    1;
   user-select:    none;
@@ -733,7 +739,7 @@ body.scroll-locked .stt-btn { opacity: 0 !important; pointer-events: none !impor
   font-size:      clamp(48px, 7vw, 88px);
   font-weight:    700;
   color:          var(--accent2);
-  opacity:        .018;
+  opacity:        .013;
   writing-mode:   vertical-rl;
   line-height:    1;
   user-select:    none;
@@ -748,30 +754,7 @@ body.scroll-locked .stt-btn { opacity: 0 !important; pointer-events: none !impor
   .bg-kanji::after { animation: none; }
 }
 
-/* ── P3R BAR INDICATOR ───────────────────────────────────────
-   The thin vertical bars at the top of P3R battle/menu screens.
-   Very subtle — only visible on dark themes.
-   ──────────────────────────────────────────────────────────── */
-.bg-bars {
-  position:       fixed;
-  top:            0; left: 0; right: 0;
-  height:         3px;
-  pointer-events: none;
-  z-index:        999;
-  /* Below the nav (z-index 1000) */
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(var(--accent-rgb), .35) 0px,
-    rgba(var(--accent-rgb), .35) 2px,
-    transparent                  2px,
-    transparent                  18px
-  );
-  opacity: .4;
-  animation: p3Flicker 8s 3s infinite;
-}
-[data-theme="dawn"] .bg-bars { display: none; }
-@media (max-width: 860px) { .bg-bars { display: none; } }
-@media (prefers-reduced-motion: reduce) { .bg-bars { animation: none; } }
+/* bg-bars removed — too noisy on professional portfolio */
 
 /* ── P3R NAME BADGE ──────────────────────────────────────────
    Inspired by the character name pill in P3R battle/dialogue

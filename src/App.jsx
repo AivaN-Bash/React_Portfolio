@@ -66,8 +66,7 @@ const Background = memo(() => (
     {/* Ghost kanji watermarks — P3R battle screen atmosphere */}
     <div className="bg-kanji" aria-hidden="true"/>
 
-    {/* Bar indicator — P3R UI edge detail */}
-    <div className="bg-bars" aria-hidden="true"/>
+{/* bg-bars removed — too noisy for professional portfolio */}
   </div>
 ));
 Background.displayName = "Background";
