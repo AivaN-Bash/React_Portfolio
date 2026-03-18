@@ -19,7 +19,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color:          var(--text-muted);
-  padding:        11px 22px;
+  padding:        12px 22px;
   white-space:    nowrap;
   cursor:         pointer;
   border:         none;

@@ -9,7 +9,7 @@
   position: relative;
   background: rgba(var(--bg2-rgb), .88);
   border: 1px solid rgba(var(--accent-rgb),.1);
-  padding: 26px 24px;
+  padding: 24px;
   clip-path: polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));
   transition: transform 0.28s var(--ease), box-shadow 0.28s var(--ease), border-color 0.28s var(--ease);
   overflow: hidden;
